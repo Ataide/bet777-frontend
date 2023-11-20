@@ -49,13 +49,12 @@ export default function CheckboxList({
         ".MuiListItemText-secondary": { color: "#fff", fontSize: "12px" },
       }}
     >
-      {[0].map((value) => {
+      {[0].map((value, index) => {
         const labelId = `checkbox-list-label-${value}`;
 
         return (
-          <>
+          <div key={index}>
             <ListItem
-              key={value}
               secondaryAction={
                 <IconButton edge="end" aria-label="comments">
                   <Typography variant="body1" color="primary">
@@ -90,7 +89,7 @@ export default function CheckboxList({
                 </Box>
               </ListItemButton>
             </ListItem>
-          </>
+          </div>
         );
       })}
     </List>

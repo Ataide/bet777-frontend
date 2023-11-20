@@ -62,6 +62,7 @@ export default function LoginDialog({
         onClose();
       },
       onError: (error: any) => {
+        console.log(error);
         if (Array.isArray((error as any).response.data.error)) {
           (error as any).response.data.error.forEach((el: any) =>
             toast.error(el.message, {

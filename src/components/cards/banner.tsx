@@ -14,10 +14,12 @@ import {
   TenisIcon,
   VoleiIcon,
 } from "../icons/banner";
+import { useNavigate } from "react-router-dom";
 
 function ItemSports() {}
 
 export default function MainBanner() {
+  const navigate = useNavigate();
   return (
     <Card sx={{ borderRadius: "10px" }}>
       <CardMedia sx={{ height: 330 }} image={bannerUrl} title="Main Banner" />
@@ -35,6 +37,7 @@ export default function MainBanner() {
             flexDirection={"column"}
             alignItems={"center"}
             gap={1}
+            onClick={() => navigate("esportes/1")}
             sx={{
               ":hover": {
                 cursor: "pointer",
@@ -51,6 +54,7 @@ export default function MainBanner() {
             flexDirection={"column"}
             alignItems={"center"}
             gap={1}
+            onClick={() => navigate("esportes/2")}
             sx={{
               ":hover": {
                 cursor: "pointer",
@@ -67,6 +71,7 @@ export default function MainBanner() {
             flexDirection={"column"}
             alignItems={"center"}
             gap={1}
+            onClick={() => navigate("esportes/3")}
             sx={{
               ":hover": {
                 cursor: "pointer",
@@ -83,6 +88,7 @@ export default function MainBanner() {
             flexDirection={"column"}
             alignItems={"center"}
             gap={1}
+            onClick={() => navigate("esportes/7")}
             sx={{
               ":hover": {
                 cursor: "pointer",
@@ -99,6 +105,7 @@ export default function MainBanner() {
             flexDirection={"column"}
             alignItems={"center"}
             gap={1}
+            onClick={() => navigate("esportes/6")}
             sx={{
               ":hover": {
                 cursor: "pointer",
@@ -115,6 +122,7 @@ export default function MainBanner() {
             flexDirection={"column"}
             alignItems={"center"}
             gap={1}
+            onClick={() => navigate("esportes/4")}
             sx={{
               ":hover": {
                 cursor: "pointer",
@@ -131,6 +139,7 @@ export default function MainBanner() {
             flexDirection={"column"}
             alignItems={"center"}
             gap={1}
+            onClick={() => navigate("esportes/5")}
             sx={{
               ":hover": {
                 cursor: "pointer",

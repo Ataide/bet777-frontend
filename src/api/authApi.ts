@@ -2,12 +2,13 @@ import axios from "axios";
 import { LoginInput } from "../components/dialogs/login.dialog";
 import { RegisterInput } from "../components/steppers/register";
 import { GenericResponse, ILoginResponse, IUserResponse } from "./types";
+import { toast } from "react-toastify";
 
-const BASE_URL = "http://localhost/";
+export const BASE_URL = "http://localhost/";
+export const DOMAIN_URL = "http://localhost";
+// const BASE_URL = "https://laravel-dj6v.frb.io/";
 
 export const FORGOTPASSWORD_URL = `${BASE_URL}forgot-password`;
-
-// const BASE_URL = "https://laravel-dj6v.frb.io/api";
 
 export const authApi = axios.create({
   baseURL: BASE_URL,
@@ -40,27 +41,51 @@ authApi.interceptors.response.use(
     return response;
   },
   async (error) => {
+    console.log(error);
     const originalRequest = error.config;
-    const errMessage = error.response.data.message as string;
-    if (errMessage.includes("not logged in") && !originalRequest._retry) {
-      originalRequest._retry = true;
-      await refreshAccessTokenFn();
-      return authApi(originalRequest);
+
+    if (error.code.includes("ERR_NETWORK")) {
+      toast.error("Sem conexão com API.");
     }
-    if (error.response.data.message.includes("not refresh")) {
-      document.location.href = "/login";
+
+    if (error.response) {
+      const errMessage = error.response.data.message as string;
+
+      if (errMessage.includes("not logged in") && !originalRequest._retry) {
+        originalRequest._retry = true;
+        await refreshAccessTokenFn();
+        return authApi(originalRequest);
+      }
+
+      if (errMessage.includes("Unauthenticated.")) {
+        localStorage.removeItem("@bet777:token");
+        window.location.href = "/";
+      }
+
+      if (error.response.data.message.includes("not refresh")) {
+        document.location.href = "/login";
+      }
     }
+
     return Promise.reject(error);
   }
 );
 
 export const signUpUserFn = async (user: RegisterInput) => {
-  const response = await authApi.post<GenericResponse>("api/register", user);
+  const response = await authApi.post<ILoginResponse>("api/register", user);
   return response.data;
 };
 
 export const loginUserFn = async (user: LoginInput) => {
   const response = await authApi.post<ILoginResponse>("api/login", user);
+  return response.data;
+};
+
+export const updateProfileUserFn = async (user: any) => {
+  const response = await authApi.post<GenericResponse>(
+    "api/update-profile",
+    user
+  );
   return response.data;
 };
 

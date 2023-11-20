@@ -1,3 +1,5 @@
+import { IBet } from "../types";
+
 export const phoneRegex = new RegExp(
   /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/
 );
@@ -28,4 +30,29 @@ export const getAgeFrom = (DOB) => {
     age--;
   }
   return age;
+};
+
+export const formatter = new Intl.NumberFormat("pt-br", {
+  style: "currency",
+  currency: "BRL",
+
+  // These options are needed to round to whole numbers if that's what you want.
+  //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+  //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+});
+
+export const getPalpitesFromBet = (bets: IBet[]) => {
+  const choices = bets.map((bet) => {
+    switch (bet.bet_choice) {
+      case 0:
+        return "Empate, ";
+      case 1:
+        return bet.game.home_name + ", ";
+      case -1:
+        return bet.game.away_name + ", ";
+      default:
+        break;
+    }
+  });
+  return choices;
 };

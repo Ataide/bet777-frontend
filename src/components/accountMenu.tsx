@@ -6,12 +6,12 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
 
-
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { useMutation } from "react-query";
 import { useStateContext } from "../contexts";
 import { logoutUserFn } from "../api/authApi";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 interface AccountMenuProps {
   name: string;
@@ -27,12 +27,11 @@ export default function AccountMenu({ name }: AccountMenuProps) {
     setAnchorEl(null);
   };
 
-  const stateContext = useStateContext();
-
   const { mutate: logoutUser, isLoading } = useMutation(
     async () => await logoutUserFn(),
     {
       onSuccess: (data) => {
+        localStorage.removeItem("@bet777:token");
         window.location.href = "/";
       },
       onError: (error: any) => {
@@ -50,6 +49,7 @@ export default function AccountMenu({ name }: AccountMenuProps) {
       },
     }
   );
+  const navigate = useNavigate();
 
   return (
     <>
@@ -112,10 +112,13 @@ export default function AccountMenu({ name }: AccountMenuProps) {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={handleClose}>
-          {/* <Link href={route("profile.edit")} className="flex items-center">
-            Conta
-          </Link> */}
+        <MenuItem
+          onClick={() => {
+            navigate("/conta");
+            handleClose();
+          }}
+        >
+          Conta
         </MenuItem>
 
         <MenuItem

@@ -45,9 +45,11 @@ import Container from "@mui/material/Container";
 import LoginDialog from "../components/dialogs/login.dialog";
 import { useState } from "react";
 import RegisterDialog from "../components/dialogs/register.dialog";
-import { useAuth } from "../hooks/useAuth";
 import AccountMenu from "../components/accountMenu";
-import { useStateContext } from "../contexts";
+import { useAuthUser } from "../hooks/useAuthUser";
+import WalletCard from "../components/cards/wallet";
+import TopBets from "../components/cards/topbets";
+import PaperCard from "../components/cards/papers";
 
 const Navlink = styled(Link)(({ theme }) => ({
   color: "#ffffff",
@@ -60,20 +62,13 @@ const Navlink = styled(Link)(({ theme }) => ({
 }));
 
 export default function AuthenticatedLayout() {
-  // const [mobileOpen, setMobileOpen] = React.useState(false);
   const location = useLocation();
   const [value, setValue] = useState(location.pathname);
-  const [openLogin, setOpenLogin] = useState(false);
-  const [openRegister, setOpenRegister] = useState(false);
+  const { openLogin, setOpenLogin } = useLayout();
+  const { openRegister, setOpenRegister } = useLayout();
+  const { user } = useAuthUser();
 
-  const stateContext = useStateContext();
-  const user = stateContext.state.authUser;
-
-  const { drawerWidth } = useLayout();
-
-  // const handleDrawerToggle = () => {
-  //   setMobileOpen(!mobileOpen);
-  // };
+  const { drawerWidth, righrDrawerWidth } = useLayout();
 
   const { pathname } = useLocation();
 
@@ -126,7 +121,15 @@ export default function AuthenticatedLayout() {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton onClick={() => navigate("/favoritos")}>
+            <ListItemButton
+              onClick={() => {
+                if (!user) {
+                  setOpenLogin(true);
+                  return;
+                }
+                navigate("/favoritos");
+              }}
+            >
               <ListItemIcon>
                 <FavoriteIcon />
               </ListItemIcon>
@@ -139,7 +142,7 @@ export default function AuthenticatedLayout() {
             </Typography>
           </Box>
           <ListItem disablePadding>
-            <ListItemButton onClick={() => navigate("/")}>
+            <ListItemButton onClick={() => navigate("/esportes/1")}>
               <ListItemIcon>
                 <FutebolIcon />
               </ListItemIcon>
@@ -147,7 +150,7 @@ export default function AuthenticatedLayout() {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton onClick={() => navigate("/")}>
+            <ListItemButton onClick={() => navigate("/esportes/2")}>
               <ListItemIcon>
                 <VoleiIcon />
               </ListItemIcon>
@@ -155,7 +158,7 @@ export default function AuthenticatedLayout() {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton onClick={() => navigate("/")}>
+            <ListItemButton onClick={() => navigate("/esportes/3")}>
               <ListItemIcon>
                 <BasqueteIcon />
               </ListItemIcon>
@@ -163,7 +166,7 @@ export default function AuthenticatedLayout() {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton onClick={() => navigate("/")}>
+            <ListItemButton onClick={() => navigate("/esportes/7")}>
               <ListItemIcon>
                 <TenisIcon />
               </ListItemIcon>
@@ -171,7 +174,7 @@ export default function AuthenticatedLayout() {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton onClick={() => navigate("/")}>
+            <ListItemButton onClick={() => navigate("/esportes/6")}>
               <ListItemIcon>
                 <FutebolAIcon />
               </ListItemIcon>
@@ -179,7 +182,7 @@ export default function AuthenticatedLayout() {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton onClick={() => navigate("/")}>
+            <ListItemButton onClick={() => navigate("/esportes/5")}>
               <ListItemIcon>
                 <BoxeIcon />
               </ListItemIcon>
@@ -187,7 +190,7 @@ export default function AuthenticatedLayout() {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton onClick={() => navigate("/")}>
+            <ListItemButton onClick={() => navigate("/esportes/7")}>
               <ListItemIcon>
                 <BaisebolIcon />
               </ListItemIcon>
@@ -195,7 +198,7 @@ export default function AuthenticatedLayout() {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton onClick={() => navigate("/")}>
+            <ListItemButton onClick={() => navigate("/esportes/8")}>
               <ListItemText primary={"Outros"} />
             </ListItemButton>
           </ListItem>
@@ -215,12 +218,26 @@ export default function AuthenticatedLayout() {
         }}
       >
         <Toolbar>
-          <Box display={"flex"} justifyContent={"space-between"} flex={1}>
+          <Box
+            display={"flex"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+            flex={1}
+          >
             <Box display={"flex"} gap={3}>
               <Navlink to={"/"} className={pathname === "/" ? "active" : ""}>
                 Pagina Inicial
               </Navlink>
               <Navlink
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (!user) {
+                    setOpenLogin(true);
+                    return;
+                  }
+
+                  navigate("/favoritos");
+                }}
                 to={"/favoritos"}
                 className={pathname === "/favoritos" ? "active" : ""}
               >
@@ -324,6 +341,37 @@ export default function AuthenticatedLayout() {
           <BottomNavigationAction value="/settings" icon={<SettingsIcon />} />
         </BottomNavigation>
       </Paper>
+      <Box
+        component="nav"
+        sx={{
+          zIndex: 1000,
+          width: { sm: righrDrawerWidth },
+          flexShrink: { sm: 0 },
+        }}
+        aria-label="nav-links"
+      >
+        <Drawer
+          variant="permanent"
+          anchor="right"
+          sx={{
+            display: { xs: "none", sm: "block" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: righrDrawerWidth,
+            },
+          }}
+          open={true}
+        >
+          <Toolbar />
+          <Paper>
+            <Box p={2} mt={4} display={"flex"} flexDirection={"column"} gap={4}>
+              <WalletCard />
+              {/* <TopBets /> */}
+              <PaperCard />
+            </Box>
+          </Paper>
+        </Drawer>
+      </Box>
       <LoginDialog open={openLogin} onClose={() => setOpenLogin(!openLogin)} />
       <RegisterDialog
         open={openRegister}

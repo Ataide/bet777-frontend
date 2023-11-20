@@ -16,14 +16,14 @@ const AuthMiddleware: React.FC<AuthMiddlewareProps> = ({ children }) => {
   const stateContext = useStateContext();
 
   const query = useQuery(["authUser"], () => getMeFn(), {
-    enabled: !token,
+    enabled: Boolean(token),
     select: (data) => data,
     onSuccess: (data) => {
       stateContext.dispatch({ type: "SET_USER", payload: data });
     },
   });
 
-  if (query.isLoading && token) {
+  if (query.isLoading && Boolean(token)) {
     return <FullScreenLoader />;
   }
 

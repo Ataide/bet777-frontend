@@ -45,20 +45,7 @@ article.page {
     transform: scale(1.4);
   }
 }
-
-/* article.page.MuiContainer-root {
-  padding: 0;
+.slick-slider {
+  max-width: 1160px !important;
+  margin: 0 auto;
 }
-
-article.page > main {
-  padding: 1rem;
-}
-
-MuiContainer-root .page > main,
-footer {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-} */
-/* .page > header {
-  padding-top: 0.5rem;
-} */

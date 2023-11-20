@@ -19,6 +19,11 @@ import { useState } from "react";
 import InfoIcon from "@mui/icons-material/Info";
 import IconButton from "@mui/material/IconButton";
 import PasswordPopover from "../popovers/PasswordPopover";
+import { CpfTextMask, OddFloatMask, PhoneTextMask } from "../masks/text.masks";
+import { phoneRegex } from "../../utils/utils";
+import { signUpUserFn } from "../../api/authApi";
+import { useMutation } from "react-query";
+import { toast } from "react-toastify";
 
 const steps = [
   "Informação Pessoal",
@@ -36,7 +41,13 @@ const registerInput = z
     email: z.string().min(1, { message: "Email é obrigatório." }).email({
       message: "Email não é valido.",
     }),
-    phone: z.string().min(1, { message: "Insira seu telefone/Telefone" }),
+    phone: z
+      .string()
+      .min(1, { message: "Insira seu telefone/Telefone" })
+      .regex(
+        new RegExp(/^\(?[1-9]{2}\)? ?(?:[2-8]|9[0-9])[0-9]{3}\-?[0-9]{4}$/),
+        { message: "Telefone inválido" }
+      ),
     pix_type: z.string().min(1, { message: "Selecione um meio pix" }),
     pix_key: z.string().min(1, { message: "Selecione um pix" }),
     password: z
@@ -53,7 +64,7 @@ const registerInput = z
 
 export type RegisterInput = z.infer<typeof registerInput>;
 
-export default function RegisterStepper() {
+export default function RegisterStepper({ onClose }: { onClose: () => void }) {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set<number>());
   const [anchorElPopoverPassword, setAnchorElPopoverPassword] =
@@ -63,23 +74,51 @@ export default function RegisterStepper() {
     control,
     handleSubmit,
     setValue,
-    formState: { errors, isSubmitSuccessful },
+    getValues,
+    trigger,
+    formState: { errors },
     reset,
   } = useForm<RegisterInput>({
+    mode: "onChange",
     resolver: zodResolver(registerInput),
   });
+
+  const { mutate: callMutate, isLoading } = useMutation(
+    (userData: RegisterInput) => signUpUserFn(userData),
+    {
+      onSuccess: (data) => {
+        localStorage.setItem(
+          "@bet777:token",
+          JSON.parse(JSON.stringify(data.token))
+        );
+
+        toast.success("You successfully logged in");
+        onClose();
+      },
+      onError: (error: any) => {
+        console.log(error);
+        if (Array.isArray((error as any).response.data.error)) {
+          (error as any).response.data.error.forEach((el: any) =>
+            toast.error(el.message, {
+              position: "top-right",
+            })
+          );
+        } else {
+          toast.error((error as any).response.data.message, {
+            position: "top-right",
+          });
+        }
+      },
+    }
+  );
 
   const handleChangePixType = (event) => {
     setValue("pix_type", event.target.value);
   };
 
   const onSubmitHandler: SubmitHandler<RegisterInput> = (values) => {
-    // ? Executing the loginUser Mutation
     console.log(values);
-  };
-
-  const isStepSkipped = (step: number) => {
-    return skipped.has(step);
+    callMutate(values);
   };
 
   const handleOpenPasswordInfo = (
@@ -89,14 +128,36 @@ export default function RegisterStepper() {
   };
 
   const handleNext = () => {
-    let newSkipped = skipped;
-    if (isStepSkipped(activeStep)) {
-      newSkipped = new Set(newSkipped.values());
-      newSkipped.delete(activeStep);
+    if (activeStep === 0) {
+      trigger(["first_name", "last_name"]).then((isValid) => {
+        if (isValid) {
+          setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        }
+      });
     }
-
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped(newSkipped);
+    if (activeStep === 1) {
+      trigger(["email", "phone"]).then((isValid) => {
+        if (isValid) {
+          setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        }
+      });
+    }
+    if (activeStep === 2) {
+      trigger(["username", "password", "password_confirmation"]).then(
+        (isValid) => {
+          if (isValid) {
+            setActiveStep((prevActiveStep) => prevActiveStep + 1);
+          }
+        }
+      );
+    }
+    if (activeStep === 3) {
+      trigger(["cpf", "pix_type", "pix_key"]).then((isValid) => {
+        if (isValid) {
+          onSubmitHandler(getValues());
+        }
+      });
+    }
   };
 
   const handleBack = () => {
@@ -135,10 +196,8 @@ export default function RegisterStepper() {
         </React.Fragment>
       ) : (
         <React.Fragment>
-          <Typography sx={{ mt: 2, mb: 1 }}> {steps[activeStep]}</Typography>
           <Box
             component="form"
-            id="form_"
             onSubmit={handleSubmit(onSubmitHandler)}
             noValidate
             sx={{
@@ -147,6 +206,9 @@ export default function RegisterStepper() {
             }}
             gap={1}
           >
+            <Typography variant="caption" sx={{ mt: 2 }}>
+              {steps[activeStep]}
+            </Typography>
             {activeStep === 0 && (
               <>
                 <Controller
@@ -156,11 +218,11 @@ export default function RegisterStepper() {
                   render={({ field: { ref, ...field } }) => (
                     <TextField
                       margin="normal"
-                      // disabled={isLoading}
                       fullWidth
-                      label="Nome"
+                      placeholder="Nome"
                       error={Boolean(errors.first_name)}
                       helperText={errors.first_name?.message}
+                      InputLabelProps={{ shrink: false }}
                       inputRef={ref}
                       {...field}
                     />
@@ -175,7 +237,8 @@ export default function RegisterStepper() {
                       margin="normal"
                       // disabled={isLoading}
                       fullWidth
-                      label="Sobrenome"
+                      placeholder="Sobrenome"
+                      InputLabelProps={{ shrink: false }}
                       error={Boolean(errors.last_name)}
                       helperText={errors.last_name?.message}
                       inputRef={ref}
@@ -197,24 +260,26 @@ export default function RegisterStepper() {
                       margin="normal"
                       // disabled={isLoading}
                       fullWidth
-                      label="Email"
+                      placeholder="Email"
                       error={Boolean(errors.email)}
                       helperText={errors.email?.message}
+                      InputLabelProps={{ shrink: false }}
                       inputRef={ref}
                       {...field}
                     />
                   )}
                 />
-                <Typography variant="body1">Número de telefone</Typography>
+                <Typography variant="caption">Número de telefone</Typography>
                 <Controller
                   name="phone"
                   control={control}
                   defaultValue=""
                   render={({ field: { ref, ...field } }) => (
                     <TextField
+                      margin="normal"
                       fullWidth
-                      required
                       InputProps={{
+                        inputComponent: PhoneTextMask as any,
                         startAdornment: (
                           <InputAdornment position="start">
                             <Typography
@@ -227,10 +292,12 @@ export default function RegisterStepper() {
                           </InputAdornment>
                         ),
                       }}
-                      id="phone"
-                      label="Celular"
-                      error={Boolean(errors.email)}
+                      placeholder="(11) XXXXX-XXXX"
+                      InputLabelProps={{ shrink: false }}
+                      error={Boolean(errors.phone)}
                       helperText={errors.phone?.message}
+                      inputRef={ref}
+                      {...field}
                     />
                   )}
                 />
@@ -248,7 +315,8 @@ export default function RegisterStepper() {
                       margin="normal"
                       // disabled={isLoading}
                       fullWidth
-                      label="Usuário"
+                      placeholder="Usuário"
+                      InputLabelProps={{ shrink: false }}
                       error={Boolean(errors.username)}
                       helperText={errors.username?.message}
                       inputRef={ref}
@@ -265,6 +333,7 @@ export default function RegisterStepper() {
                     <TextField
                       margin="normal"
                       type="password"
+                      InputLabelProps={{ shrink: false }}
                       // disabled={isLoading}
                       InputProps={{
                         startAdornment: (
@@ -279,7 +348,7 @@ export default function RegisterStepper() {
                         ),
                       }}
                       fullWidth
-                      label="Senha"
+                      placeholder="Senha"
                       error={Boolean(errors.password)}
                       helperText={errors.password?.message}
                       inputRef={ref}
@@ -304,7 +373,8 @@ export default function RegisterStepper() {
                       type="password"
                       // disabled={isLoading}
                       fullWidth
-                      label="Insira a senha novamente"
+                      InputLabelProps={{ shrink: false }}
+                      placeholder="Insira a senha novamente"
                       error={Boolean(errors.password_confirmation)}
                       helperText={errors.password_confirmation?.message}
                       inputRef={ref}
@@ -326,9 +396,13 @@ export default function RegisterStepper() {
                       margin="normal"
                       // disabled={isLoading}
                       fullWidth
-                      label="Cpf"
+                      placeholder="Cpf"
                       error={Boolean(errors.cpf)}
                       helperText={errors.cpf?.message}
+                      InputLabelProps={{ shrink: false }}
+                      InputProps={{
+                        inputComponent: CpfTextMask as any,
+                      }}
                       inputRef={ref}
                       {...field}
                     />
@@ -336,7 +410,7 @@ export default function RegisterStepper() {
                 />
 
                 <FormControl>
-                  <Typography variant="body1">
+                  <Typography variant="caption">
                     Selecione o tipo de chave pix
                   </Typography>
                   <RadioGroup

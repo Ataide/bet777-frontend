@@ -30,11 +30,16 @@ export default function RegisterDialog({
         maxWidth={"xs"}
         fullWidth
       >
-        <DialogTitle sx={{ paddingRight: 1 }}>
-          <Box display={"flex"} alignItems={"center"} justifyContent={"end"}>
-            <Typography variant="body1">
+        <DialogTitle component={Box} sx={{ p: "8px !important" }}>
+          <Box
+            p={1}
+            display={"flex"}
+            alignItems={"center"}
+            justifyContent={"end"}
+          >
+            <Typography variant="caption">
               Já possui uma conta?{" "}
-              <Link textAlign={"end"} fontWeight={400}>
+              <Link textAlign={"end"} fontWeight={400} fontSize={12}>
                 Faça login aqui
               </Link>
             </Typography>
@@ -51,7 +56,7 @@ export default function RegisterDialog({
         </DialogTitle>
 
         <DialogContent sx={{ p: 2 }}>
-          <RegisterStepper />
+          <RegisterStepper onClose={onClose} />
         </DialogContent>
       </Dialog>
     </>
