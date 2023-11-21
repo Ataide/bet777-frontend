@@ -1,3 +1,4 @@
+import { Dayjs } from "dayjs";
 import { authApi } from "../api/authApi";
 import { GenericResponse } from "../api/types";
 import { IDepositInput } from "../pages/account/deposit";
@@ -25,9 +26,12 @@ export const getWalletFn = async () => {
   return response.data;
 };
 
-export const getWalletTransactionsFn = async (type: string | null) => {
+export const getWalletTransactionsFn = async (
+  type: string | null,
+  date: Dayjs | null
+) => {
   const response = await authApi.get<ITransaction[]>("api/transactions", {
-    params: { type: type },
+    params: { type: type, date: date },
   });
   return response.data;
 };

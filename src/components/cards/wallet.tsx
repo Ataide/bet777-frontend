@@ -187,7 +187,7 @@ function Bets() {
               <Box
                 display={"flex"}
                 flexDirection={"row"}
-                justifyContent={"space-paperween"}
+                justifyContent={"space-between"}
               >
                 <Box display={"flex"}>
                   <Typography variant="caption" color="initial">

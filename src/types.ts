@@ -90,6 +90,6 @@ export type IProfitRequest = {
 
 export type IBetRequest = {
   quantity?: number;
-  amount: number;
+  amount: string;
   profit?: number;
 };

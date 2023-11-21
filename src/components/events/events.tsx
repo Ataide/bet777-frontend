@@ -16,6 +16,7 @@ import Players from "./players";
 import { StyledTableCell, StyledTableRow } from "./styled";
 import { useAuthUser } from "../../hooks/useAuthUser";
 import { useLayout } from "../../hooks/useLayout";
+import dayjs from "dayjs";
 
 export default function Events({
   event,
@@ -107,7 +108,9 @@ export default function Events({
                             color="primary"
                             sx={{ minWidth: "150px" }}
                           >
-                            {game.time_close_bet}
+                            {dayjs(game.time_close_bet).format(
+                              "DD/MM/YYYY hh:mm"
+                            )}
                           </Typography>
                           <Box
                             height={100}

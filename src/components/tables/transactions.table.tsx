@@ -16,6 +16,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Box from "@mui/material/Box";
+import DateField from "../date/datePicker";
 
 function createData(
   name: string,
@@ -39,12 +40,12 @@ export default function TransactionTable() {
   const [value, setValue] = React.useState("");
   const [date, setDate] = React.useState<Dayjs | null>(null);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue((event.target as HTMLInputElement).value);
   };
 
-  const { data } = useQuery(["user-transaction", value], () =>
-    getWalletTransactionsFn(value)
+  const { data } = useQuery(["user-transaction", value, date], () =>
+    getWalletTransactionsFn(value, date)
   );
 
   if (data) {
@@ -54,7 +55,8 @@ export default function TransactionTable() {
   return (
     <>
       <Box display={"flex"} gap={2} mb={2}>
-        <DatePicker
+        <DateField value={date} onChange={(newValue) => setDate(newValue)} />
+        {/* <DatePicker
           sx={({ palette }) => ({
             "& .MuiOutlinedInput-root": {
               color: palette.common.white,
@@ -63,15 +65,18 @@ export default function TransactionTable() {
             "& .MuiSvgIcon-root": {
               color: palette.primary.main,
             },
+            ".MuiDayCalendar-weekDayLabel": {
+              color: palette.primary.main,
+            },
           })}
           value={date}
           onChange={(newValue) => setDate(newValue)}
-        />
+        /> */}
         <RadioGroup
           aria-labelledby="tipo-de-transacao"
           name="type"
           value={value}
-          onChange={handleChange}
+          onChange={handleTypeChange}
           row
         >
           <FormControlLabel

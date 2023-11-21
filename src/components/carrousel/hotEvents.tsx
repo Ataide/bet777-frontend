@@ -11,6 +11,7 @@ import { Game } from "../../types";
 import { AppContext } from "../../contexts/AppContext";
 import Slider from "react-slick";
 import dayjs from "dayjs";
+import { DOMAIN_URL } from "../../api/authApi";
 
 export function HotEvents() {
   const settings = {
@@ -80,6 +81,12 @@ export function HotEvents() {
                 <Box p={1}>
                   <Grid container spacing={2}>
                     <Grid item xs={4}>
+                      <img
+                        style={{ margin: "10px auto" }}
+                        src={DOMAIN_URL + game.home_image}
+                        width={40}
+                        alt=""
+                      />
                       <GaugeChart
                         animate={false}
                         nrOfLevels={20}
@@ -95,8 +102,9 @@ export function HotEvents() {
                         colors={["#FF0000", "#00FF00"]}
                         needleColor="#7AFF59AA"
                       />
+
                       <Button
-                        sx={{ minHeight: "56%" }}
+                        sx={{ minHeight: "26%" }}
                         variant="contained"
                         fullWidth={true}
                         color={
@@ -118,21 +126,32 @@ export function HotEvents() {
                     </Grid>
 
                     <Grid item xs={4}>
+                      <Box
+                        height={"40px"}
+                        margin={"10px"}
+                        display={"flex"}
+                        alignItems={"center"}
+                        justifyContent={"center"}
+                      >
+                        VS
+                      </Box>
                       <GaugeChart
                         animate={false}
                         colors={["#FF0000", "#00FF00"]}
                         nrOfLevels={20}
                         needleColor="#7AFF59AA"
                         percent={
-                          (game.draw_rate * 100) /
-                          (+game.home_rate +
-                            +game.draw_rate +
-                            +game.away_rate) /
-                          100
+                          ((game.draw_rate * 100) /
+                            (+game.home_rate +
+                              +game.draw_rate +
+                              +game.away_rate) /
+                            100 +
+                            -1) *
+                          -1
                         }
                       />
+
                       <Button
-                        sx={{ minHeight: "56%" }}
                         variant="contained"
                         fullWidth
                         color={
@@ -153,21 +172,29 @@ export function HotEvents() {
                       </Button>
                     </Grid>
                     <Grid item xs={4}>
+                      <img
+                        style={{ margin: "10px auto" }}
+                        src={DOMAIN_URL + game.away_image}
+                        width={40}
+                        alt=""
+                      />
                       <GaugeChart
                         animate={false}
                         colors={["#FF0000", "#00FF00"]}
                         nrOfLevels={20}
                         needleColor="#7AFF59AA"
                         percent={
-                          (game.away_rate * 100) /
-                          (+game.home_rate +
-                            +game.draw_rate +
-                            +game.away_rate) /
-                          100
+                          ((game.away_rate * 100) /
+                            (+game.home_rate +
+                              +game.draw_rate +
+                              +game.away_rate) /
+                            100 +
+                            -1) *
+                          -1
                         }
                       />
+
                       <Button
-                        sx={{ minHeight: "56%" }}
                         variant="contained"
                         fullWidth
                         color={
@@ -196,94 +223,3 @@ export function HotEvents() {
     </Slider>
   );
 }
-
-// {event.games.map((game) => {
-//   <Grid item xs={6} key={index}>
-//     <Paper
-//       sx={{ paddingX: 4, paddingY: 2, borderRadius: "10px" }}
-//     >
-//       <Box p={1}>
-//         <Typography textAlign={"center"} variant="body1">
-//           {event.name}
-//         </Typography>
-//         <Typography variant="subtitle2">
-//           {event.name}
-//         </Typography>
-//         <hr />
-//         <Box p={1}>
-//           <Grid container spacing={2}>
-//             <Grid item xs={4}>
-//               <GaugeChart
-//                 id="gauge-chart2"
-//                 nrOfLevels={20}
-//                 percent={0.86}
-//               />
-//               <Button
-//                 variant="contained"
-//                 color={
-//                   paper?.bets.some(
-//                     (e) =>
-//                       e.game_id === game.id &&
-//                       e.bet_choice == 1
-//                   )
-//                     ? "primary"
-//                     : "secondary"
-//                 }
-//                 data-choice="1"
-//                 data-rate={game.home_rate.toFixed(2)}
-//                 data-name={game.home_name}
-//                 onClick={(e) => handleIntentBet(e, game)}
-//               >
-//                 1 <br />
-//                 {game.home_rate.toFixed(2)}
-//               </Button>
-//             </Grid>
-//             <Grid item xs={4}>
-//               <GaugeChart
-//                 id="gauge-chart2"
-//                 nrOfLevels={20}
-//                 percent={0.86}
-//               />
-//               <Button
-//                 variant="contained"
-//                 color="secondary"
-//                 fullWidth
-//               >
-//                 <Box p={2}>
-//                   <Typography variant="subtitle1">
-//                     Flamengo
-//                   </Typography>
-//                   <Typography variant="subtitle1">
-//                     5.5
-//                   </Typography>
-//                 </Box>
-//               </Button>
-//             </Grid>
-//             <Grid item xs={4}>
-//               <GaugeChart
-//                 id="gauge-chart2"
-//                 nrOfLevels={20}
-//                 percent={0.86}
-//               />
-//               <Button
-//                 variant="contained"
-//                 color="secondary"
-//                 fullWidth
-//               >
-//                 <Box p={2}>
-//                   <Typography variant="subtitle1">
-//                     Flamengo
-//                   </Typography>
-//                   <Typography variant="subtitle1">
-//                     5.5
-//                   </Typography>
-//                 </Box>
-//               </Button>
-//             </Grid>
-//           </Grid>
-//           {/* <img src={image} width={"100%"} alt="" /> */}
-//         </Box>
-//       </Box>
-//     </Paper>
-//   </Grid>;
-// // })}

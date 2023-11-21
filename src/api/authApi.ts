@@ -6,7 +6,8 @@ import { toast } from "react-toastify";
 
 export const BASE_URL = "http://localhost/";
 export const DOMAIN_URL = "http://localhost";
-// const BASE_URL = "https://laravel-dj6v.frb.io/";
+// export const BASE_URL = "https://laravel-dj6v.frb.io/";
+// export const DOMAIN_URL = "https://laravel-dj6v.frb.io";
 
 export const FORGOTPASSWORD_URL = `${BASE_URL}forgot-password`;
 

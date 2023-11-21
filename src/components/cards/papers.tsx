@@ -24,9 +24,11 @@ import { AppContext } from "../../contexts/AppContext";
 import { useMutation, useQueryClient } from "react-query";
 import { insertPaper } from "../../services/BetService";
 import { toast } from "react-toastify";
+import { CurrencyAmountMask, CurrencyMask } from "../masks/text.masks";
+import { formatter } from "../../utils/utils";
 
 const betInput = z.object({
-  amount: z.number().min(1, { message: "Valor é obrigatório." }),
+  amount: z.string().min(1, { message: "Valor é obrigatório." }),
 });
 
 export type BetInput = z.infer<typeof betInput>;
@@ -86,7 +88,7 @@ export default function PaperCard() {
   } = useForm<BetInput>({
     resolver: zodResolver(betInput),
     defaultValues: {
-      amount: paper ? paper?.amount : 0,
+      amount: "0",
     },
   });
 
@@ -95,7 +97,7 @@ export default function PaperCard() {
     const paper_rate = paper ? paper.rate : 0;
     const profit = amount * paper_rate;
 
-    setValue("amount", amount);
+    setValue("amount", String(amount));
 
     updatePaperAmount(amount);
   };
@@ -159,11 +161,11 @@ export default function PaperCard() {
                       {showDetails && (
                         <Box p={2}>
                           <Box display={"flex"} flexDirection={"row"} mb={1}>
-                            <Typography variant="subtitle2" color="initial">
+                            <Typography variant="caption" color="initial">
                               Odd:
                             </Typography>
                             <Typography
-                              variant="subtitle2"
+                              variant="caption"
                               color="primary"
                               ml={1}
                             >
@@ -171,11 +173,11 @@ export default function PaperCard() {
                             </Typography>
                           </Box>
                           <Box display={"flex"} flexDirection={"row"} mb={1}>
-                            <Typography variant="subtitle2" color="initial">
+                            <Typography variant="caption" color="initial">
                               Palpite:
                             </Typography>
                             <Typography
-                              variant="subtitle2"
+                              variant="caption"
                               color="primary"
                               ml={1}
                             >
@@ -189,11 +191,11 @@ export default function PaperCard() {
                             justifyContent={"space-between"}
                           >
                             <Box display={"flex"}>
-                              <Typography variant="subtitle2" color="initial">
+                              <Typography variant="caption" color="initial">
                                 Jogo:
                               </Typography>
                               <Typography
-                                variant="subtitle2"
+                                variant="caption"
                                 color="primary"
                                 ml={1}
                               >
@@ -227,18 +229,18 @@ export default function PaperCard() {
               alignItems={"center"}
             >
               <Box display={"flex"}>
-                <Typography variant="subtitle2" color="initial">
+                <Typography variant="caption" color="initial">
                   Aposta:
                 </Typography>
-                <Typography variant="subtitle2" color="primary" ml={1}>
+                <Typography variant="caption" color="primary" ml={1}>
                   {paper && paper?.bets.length > 1 ? "Múltipla" : "Única"}
                 </Typography>
               </Box>
               <Box display={"flex"}>
-                <Typography variant="subtitle2" color="initial">
+                <Typography variant="caption" color="initial">
                   Odd:
                 </Typography>
-                <Typography variant="subtitle2" color="primary" ml={1}>
+                <Typography variant="caption" color="primary" ml={1}>
                   {paper?.rate}
                 </Typography>
               </Box>
@@ -253,10 +255,10 @@ export default function PaperCard() {
               </Box>
             </Box>
             <Box display={"flex"}>
-              <Typography variant="subtitle2" color="initial">
+              <Typography variant="caption" color="initial">
                 Palpite:
               </Typography>
-              <Typography variant="subtitle2" color="primary" ml={1}>
+              <Typography variant="caption" color="primary" ml={1}>
                 {paper?.rate}
               </Typography>
             </Box>
@@ -270,16 +272,17 @@ export default function PaperCard() {
             justifyContent={"space-between"}
             alignItems={"end"}
             p={2}
+            pb={0}
           >
             <Box display={"flex"} flexDirection={"column"}>
-              <Typography variant="subtitle2" color="initial">
+              <Typography variant="caption" color="initial">
                 Valor da aposta:
               </Typography>
 
               <Controller
                 name="amount"
                 control={control}
-                defaultValue={0}
+                defaultValue={"0"}
                 render={({ field: { ref, ...field } }) => (
                   <TextField
                     {...field}
@@ -288,6 +291,7 @@ export default function PaperCard() {
                     fullWidth
                     onChange={onChangeBet}
                     InputProps={{
+                      inputComponent: CurrencyAmountMask as any,
                       startAdornment: (
                         <InputAdornment position="start">
                           <Typography
@@ -307,15 +311,17 @@ export default function PaperCard() {
                 )}
               />
             </Box>
+          </Box>
 
-            <Box display={"flex"}>
-              <Typography variant="subtitle2" color="initial">
-                Lucro possível:
-              </Typography>
-              <Typography variant="subtitle2" color="primary" ml={1}>
-                {getValues("amount") ? paper?.profit : 0}
-              </Typography>
-            </Box>
+          <Box display={"flex"} p={2}>
+            <Typography variant="caption" color="initial">
+              Lucro possível:
+            </Typography>
+            <Typography variant="caption" color="primary" ml={1}>
+              {getValues("amount")
+                ? formatter.format(Number(paper?.profit))
+                : formatter.format(0)}
+            </Typography>
           </Box>
 
           <Button

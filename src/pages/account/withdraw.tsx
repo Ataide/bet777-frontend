@@ -20,6 +20,7 @@ import { toast } from "react-toastify";
 import { withdrawWalletFn } from "../../services/WalletService";
 import InfoIcon from "@mui/icons-material/Info";
 import WithdrawConfirmationDialog from "../../components/dialogs/withdraw.dialog";
+import { CurrencyMask } from "../../components/masks/text.masks";
 const withdrawInput = z.object({
   wallet_amount: z.string().min(1, { message: "Valor da carteira" }),
   amount: z.string().min(1, { message: "Valor deve será maior que 10" }),
@@ -199,6 +200,7 @@ export default function WithdrawPage() {
                           margin="normal"
                           fullWidth
                           InputProps={{
+                            inputComponent: CurrencyMask as any,
                             startAdornment: (
                               <InputAdornment position="start">
                                 <Typography

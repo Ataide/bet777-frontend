@@ -19,6 +19,7 @@ import { toast } from "react-toastify";
 import { depositToWalletFn } from "../../services/WalletService";
 import DepositConfirmationDialog from "../../components/dialogs/withdraw.dialog";
 import WithdrawConfirmationDialog from "../../components/dialogs/withdraw.dialog";
+import { CurrencyMask } from "../../components/masks/text.masks";
 
 const depositInput = z.object({
   name: z.string().min(1, { message: "Digite seu nome." }),
@@ -168,6 +169,7 @@ export default function DepositPage() {
                           margin="normal"
                           fullWidth
                           InputProps={{
+                            inputComponent: CurrencyMask as any,
                             startAdornment: (
                               <InputAdornment position="start">
                                 <Typography

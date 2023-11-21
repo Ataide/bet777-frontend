@@ -1,16 +1,10 @@
 import Grid from "@mui/material/Grid";
 import { useQuery } from "react-query";
-import { getFavoritesEventsFn } from "../../services/EventService";
-import Events from "../../components/events/events";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import MenuList from "@mui/material/MenuList";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import { z } from "zod";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
@@ -79,15 +73,6 @@ export default function BetsPage() {
                     <ClosedPapers />
                   </AccordionDetails>
                 </Accordion>
-                {/* <Accordion disabled>
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel3a-content"
-                    id="panel3a-header"
-                  >
-                    <Typography>Disabled Accordion</Typography>
-                  </AccordionSummary>
-                </Accordion> */}
               </Box>
             </>
           </Box>
@@ -323,13 +308,19 @@ function OpenPapers() {
     "open-papers",
     getOpenPapersFn
   );
-  return (
-    data &&
+
+  return data?.length ? (
     data.map((paper, index) => (
       <div key={index}>
         <PaperInfo paper={paper} />
       </div>
     ))
+  ) : (
+    <Box p={2}>
+      <Typography variant="body2" color="grey" textAlign={"center"}>
+        Não há dados
+      </Typography>
+    </Box>
   );
 }
 
@@ -338,14 +329,17 @@ function ClosedPapers() {
     "closed-papers",
     getClosedPapersFn
   );
-  return (
-    <>
-      {data &&
-        data.map((paper, index) => (
-          <div key={index}>
-            <PaperInfo paper={paper} />
-          </div>
-        ))}
-    </>
+  return data?.length ? (
+    data.map((paper, index) => (
+      <div key={index}>
+        <PaperInfo paper={paper} />
+      </div>
+    ))
+  ) : (
+    <Box p={2}>
+      <Typography variant="body2" color="grey" textAlign={"center"}>
+        Não há dados
+      </Typography>
+    </Box>
   );
 }

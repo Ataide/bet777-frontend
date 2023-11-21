@@ -47,9 +47,9 @@ export const getPalpitesFromBet = (bets: IBet[]) => {
       case 0:
         return "Empate, ";
       case 1:
-        return bet.game.home_name + ", ";
+        return bet?.game?.home_name + ", ";
       case -1:
-        return bet.game.away_name + ", ";
+        return bet?.game?.away_name + ", ";
       default:
         break;
     }

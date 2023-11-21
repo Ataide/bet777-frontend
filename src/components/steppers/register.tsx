@@ -11,7 +11,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
@@ -19,7 +18,7 @@ import { useState } from "react";
 import InfoIcon from "@mui/icons-material/Info";
 import IconButton from "@mui/material/IconButton";
 import PasswordPopover from "../popovers/PasswordPopover";
-import { CpfTextMask, OddFloatMask, PhoneTextMask } from "../masks/text.masks";
+import { CpfTextMask, DateTextMask, PhoneTextMask } from "../masks/text.masks";
 import { phoneRegex } from "../../utils/utils";
 import { signUpUserFn } from "../../api/authApi";
 import { useMutation } from "react-query";
@@ -36,8 +35,9 @@ const registerInput = z
   .object({
     username: z.string().min(1, { message: "Insira seu usuario" }),
     first_name: z.string().min(1, { message: "Insira seu nome" }),
+    birthday: z.string().min(10, { message: "Insira dua data de nascimento." }),
     last_name: z.string().min(1, { message: "Insira seu sobrenome" }),
-    cpf: z.string().min(1, { message: "CPF invalido/CPF ja cadastrado" }),
+    cpf: z.string().min(14, { message: "CPF invalido/CPF ja cadastrado" }),
     email: z.string().min(1, { message: "Email é obrigatório." }).email({
       message: "Email não é valido.",
     }),
@@ -66,7 +66,6 @@ export type RegisterInput = z.infer<typeof registerInput>;
 
 export default function RegisterStepper({ onClose }: { onClose: () => void }) {
   const [activeStep, setActiveStep] = useState(0);
-  const [skipped, setSkipped] = useState(new Set<number>());
   const [anchorElPopoverPassword, setAnchorElPopoverPassword] =
     React.useState<HTMLButtonElement | null>(null);
 
@@ -92,7 +91,9 @@ export default function RegisterStepper({ onClose }: { onClose: () => void }) {
           JSON.parse(JSON.stringify(data.token))
         );
 
-        toast.success("You successfully logged in");
+        toast.success(
+          "Cadastro realizado com sucesso. Faça o login agora mesmo."
+        );
         onClose();
       },
       onError: (error: any) => {
@@ -117,7 +118,6 @@ export default function RegisterStepper({ onClose }: { onClose: () => void }) {
   };
 
   const onSubmitHandler: SubmitHandler<RegisterInput> = (values) => {
-    console.log(values);
     callMutate(values);
   };
 
@@ -129,7 +129,7 @@ export default function RegisterStepper({ onClose }: { onClose: () => void }) {
 
   const handleNext = () => {
     if (activeStep === 0) {
-      trigger(["first_name", "last_name"]).then((isValid) => {
+      trigger(["first_name", "last_name", "birthday"]).then((isValid) => {
         if (isValid) {
           setActiveStep((prevActiveStep) => prevActiveStep + 1);
         }
@@ -241,6 +241,27 @@ export default function RegisterStepper({ onClose }: { onClose: () => void }) {
                       InputLabelProps={{ shrink: false }}
                       error={Boolean(errors.last_name)}
                       helperText={errors.last_name?.message}
+                      inputRef={ref}
+                      {...field}
+                    />
+                  )}
+                />
+
+                <Controller
+                  name="birthday"
+                  control={control}
+                  defaultValue=""
+                  render={({ field: { ref, ...field } }) => (
+                    <TextField
+                      margin="normal"
+                      fullWidth
+                      placeholder="Data de nascimento"
+                      InputLabelProps={{ shrink: false }}
+                      error={Boolean(errors.birthday)}
+                      helperText={errors.birthday?.message}
+                      InputProps={{
+                        inputComponent: DateTextMask as any,
+                      }}
                       inputRef={ref}
                       {...field}
                     />

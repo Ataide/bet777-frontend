@@ -52,9 +52,18 @@ const theme = createTheme({
   components: {
     MuiPaper: {
       styleOverrides: {
-        root: {
+        root: ({ theme }) => ({
           borderRadius: "10px",
-        },
+          "& .MuiDayCalendar-weekDayLabel": {
+            color: theme.palette.primary.main,
+          },
+          "& .MuiPickersArrowSwitcher-button": {
+            color: theme.palette.primary.main,
+          },
+          "& .MuiPickersCalendarHeader-switchViewIcon": {
+            color: theme.palette.primary.main,
+          },
+        }),
       },
     },
     MuiAccordion: {
