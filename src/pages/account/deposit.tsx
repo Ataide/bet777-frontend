@@ -75,8 +75,11 @@ export default function DepositPage() {
       toast.success("Depósito realizado com sucesso.", {
         position: "top-right",
       });
-      queryClient.invalidateQueries(["wallet", "authUser"]);
-      setValue("amount", "0");
+
+      // queryClient.invalidateQueries(["wallet", "authUser"]);
+
+      // setValue("amount", "0");
+      window.location.reload();
     },
     onError: (error: any) => {
       if (Array.isArray((error as any).response.data.error)) {

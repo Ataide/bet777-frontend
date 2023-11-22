@@ -97,6 +97,7 @@ export default function WalletCard() {
 
 function Ballance() {
   const { data, isError, isLoading } = useQuery("wallet", getWalletFn);
+
   const navigate = useNavigate();
 
   return (
