@@ -58,7 +58,7 @@ export default function LoginDialog({
           JSON.parse(JSON.stringify(data.token))
         );
         query.refetch();
-        toast.success("You successfully logged in");
+        toast.success("Atializado com sucesso");
         onClose();
       },
       onError: (error: any) => {

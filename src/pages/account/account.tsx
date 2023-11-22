@@ -90,7 +90,7 @@ export default function AccountPage() {
     (userData: ProfileInput) => updateProfileUserFn(userData),
     {
       onSuccess: (data) => {
-        toast.success("You successfully logged in");
+        toast.success("Atializado com sucesso");
         queryClient.invalidateQueries("authUser");
         setEditing(false);
       },

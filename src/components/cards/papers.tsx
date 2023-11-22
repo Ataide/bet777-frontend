@@ -43,6 +43,7 @@ export default function PaperCard() {
   } = useContext(AppContext);
   const queryClient = useQueryClient();
   const [showDetails, setShowDetails] = useState(true);
+
   const onSubmitHandler: SubmitHandler<BetInput> = async (
     values: IBetRequest
   ) => {
@@ -58,6 +59,7 @@ export default function PaperCard() {
   } = useMutation((_paper: IPaper) => insertPaper(_paper), {
     onSuccess: (data) => {
       clearPaper();
+
       toast.success("Aposta realizada com sucesso.", {
         position: "top-right",
       });
@@ -88,7 +90,7 @@ export default function PaperCard() {
   } = useForm<BetInput>({
     resolver: zodResolver(betInput),
     defaultValues: {
-      amount: "0",
+      amount: "",
     },
   });
 
@@ -101,10 +103,7 @@ export default function PaperCard() {
 
     updatePaperAmount(amount);
   };
-
-  useEffect(() => {
-    reset();
-  }, [open]);
+  console.log(paper?.quantity);
 
   return (
     <>
@@ -326,6 +325,7 @@ export default function PaperCard() {
 
           <Button
             fullWidth
+            disabled={paper?.quantity ? false : true}
             onClick={handleSubmit(onSubmitHandler)}
             variant="contained"
             color="primary"
