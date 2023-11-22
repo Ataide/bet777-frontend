@@ -17,6 +17,7 @@ import { useStateContext } from "../../contexts";
 import { useMutation, useQuery } from "react-query";
 import { FORGOTPASSWORD_URL, getMeFn, loginUserFn } from "../../api/authApi";
 import { toast } from "react-toastify";
+import { useLayout } from "../../hooks/useLayout";
 
 const loginInput = z.object({
   email: z.string().min(1, { message: "Email é obrigatório." }).email({
@@ -62,7 +63,7 @@ export default function LoginDialog({
         onClose();
       },
       onError: (error: any) => {
-        console.log(error);
+        //console.log(error);
         if (Array.isArray((error as any).response.data.error)) {
           (error as any).response.data.error.forEach((el: any) =>
             toast.error(el.message, {
@@ -96,6 +97,8 @@ export default function LoginDialog({
   useEffect(() => {
     reset();
   }, [open]);
+
+  const { setOpenRegister } = useLayout();
 
   return (
     <>
@@ -133,7 +136,17 @@ export default function LoginDialog({
             <Box textAlign={"center"}>
               <Typography variant="h5">Entre na sua conta</Typography>
               <Typography variant="h6" fontWeight={400}>
-                Não tem conta? <Link color={"primary"}>cadastre-se</Link>
+                Não tem conta?
+                <Link
+                  onClick={() => {
+                    onClose();
+                    setOpenRegister(true);
+                  }}
+                  sx={{ cursor: "pointer" }}
+                  color={"primary"}
+                >
+                  cadastre-se
+                </Link>
               </Typography>
             </Box>
 

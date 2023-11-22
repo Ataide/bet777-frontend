@@ -13,6 +13,7 @@ import GoogleIcon from "@mui/icons-material/Google";
 import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
 import { useEffect } from "react";
 import RegisterStepper from "../steppers/register";
+import { useLayout } from "../../hooks/useLayout";
 
 export default function RegisterDialog({
   open,
@@ -21,6 +22,7 @@ export default function RegisterDialog({
   open: boolean;
   onClose: () => void;
 }) {
+  const { setOpenLogin } = useLayout();
   return (
     <>
       <Dialog
@@ -39,7 +41,16 @@ export default function RegisterDialog({
           >
             <Typography variant="caption">
               Já possui uma conta?{" "}
-              <Link textAlign={"end"} fontWeight={400} fontSize={12}>
+              <Link
+                textAlign={"end"}
+                onClick={() => {
+                  onClose();
+                  setOpenLogin(true);
+                }}
+                sx={{ cursor: "pointer" }}
+                fontWeight={400}
+                fontSize={12}
+              >
                 Faça login aqui
               </Link>
             </Typography>

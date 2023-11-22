@@ -15,7 +15,7 @@ import {
   Paper,
   TextField,
 } from "@mui/material";
-import { z } from "zod";
+import { ZodNumber, z } from "zod";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useContext, useEffect, useState } from "react";
@@ -43,6 +43,13 @@ export default function PaperCard() {
   } = useContext(AppContext);
   const queryClient = useQueryClient();
   const [showDetails, setShowDetails] = useState(true);
+  const [_profit, set_Profit] = useState<number>(0);
+
+  useEffect(() => {
+    if (paper?.amount) {
+      set_Profit(paper?.amount * paper?.rate);
+    }
+  }, [paper]);
 
   const onSubmitHandler: SubmitHandler<BetInput> = async (
     values: IBetRequest
@@ -103,7 +110,7 @@ export default function PaperCard() {
 
     updatePaperAmount(amount);
   };
-  console.log(paper?.quantity);
+  //console.log(paper?.quantity);
 
   return (
     <>
@@ -317,9 +324,13 @@ export default function PaperCard() {
               Lucro possível:
             </Typography>
             <Typography variant="caption" color="primary" ml={1}>
-              {getValues("amount")
-                ? formatter.format(Number(paper?.profit))
-                : formatter.format(0)}
+              {
+                formatter.format(_profit)
+                // paper?.profit
+                // getValues("amount")
+                //   ? formatter.format(Number(paper?.profit))
+                //   : formatter.format(0)
+              }
             </Typography>
           </Box>
 

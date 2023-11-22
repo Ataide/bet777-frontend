@@ -6,6 +6,7 @@ interface IAppContextProps {
   paper: IPaper | null;
   addBetToPaper: (bet: IBet) => void;
   removeBetFromPaper: (bet: IBet) => void;
+  updateOnlyProfit: () => void;
   updatePaperAmount: (value: number) => void;
   clearPaper: () => void;
 }
@@ -40,6 +41,8 @@ export const AppProvider = ({ children }: PropsWithChildren) => {
       bets: [...paper.bets, _bet],
       quantity: paper.bets.length + 1,
     });
+
+    // updatePaperAmount(paper.amount);
   };
 
   const removeBetFromPaper = (_bet: IBet) => {
@@ -61,6 +64,13 @@ export const AppProvider = ({ children }: PropsWithChildren) => {
     });
   };
 
+  const updateOnlyProfit = () => {
+    _setPaper({
+      ...paper,
+      profit: paper.amount * paper.rate,
+    });
+  };
+
   const clearPaper = () => {
     _setPaper({
       user_id: user ? +user.id : 0,
@@ -78,6 +88,7 @@ export const AppProvider = ({ children }: PropsWithChildren) => {
         addBetToPaper,
         removeBetFromPaper,
         updatePaperAmount,
+        updateOnlyProfit,
         clearPaper,
       }}
     >

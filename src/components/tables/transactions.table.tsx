@@ -49,7 +49,7 @@ export default function TransactionTable() {
   );
 
   if (data) {
-    console.log(data);
+    //console.log(data);
   }
 
   return (

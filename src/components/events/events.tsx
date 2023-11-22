@@ -26,7 +26,13 @@ export default function Events({
   slug?: string;
 }) {
   const [openPaperBetDialog, setOpenPaperBetDialog] = useState(false);
-  const { addBetToPaper, paper, removeBetFromPaper } = useContext(AppContext);
+  const {
+    addBetToPaper,
+    paper,
+    removeBetFromPaper,
+    updatePaperAmount,
+    updateOnlyProfit,
+  } = useContext(AppContext);
   const { setOpenLogin } = useLayout();
   const { user } = useAuthUser();
 

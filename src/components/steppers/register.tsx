@@ -97,7 +97,7 @@ export default function RegisterStepper({ onClose }: { onClose: () => void }) {
         window.location.reload();
       },
       onError: (error: any) => {
-        console.log(error);
+        //console.log(error);
         if (Array.isArray((error as any).response.data.error)) {
           (error as any).response.data.error.forEach((el: any) =>
             toast.error(el.message, {

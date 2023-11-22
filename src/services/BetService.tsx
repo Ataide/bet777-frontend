@@ -9,12 +9,12 @@ export const insertPaper = async (paper: IPaper | null) => {
 
 export const getOpenPapersFn = async () => {
   const response = await authApi.get<IPaper[]>("api/paper?status=-1");
-  console.log(response);
+  //console.log(response);
   return response.data;
 };
 
 export const getClosedPapersFn = async () => {
   const response = await authApi.get<IPaper[]>("api/paper?status=1");
-  console.log(response);
+  //console.log(response);
   return response.data;
 };

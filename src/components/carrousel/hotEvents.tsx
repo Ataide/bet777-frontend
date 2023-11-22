@@ -60,7 +60,7 @@ export function HotEvents() {
   return (
     <Slider {...settings}>
       {data?.data.map((event) => {
-        console.log(event);
+        //console.log(event);
         return event.games.map((game, index) => (
           <Box p={1}>
             <Paper
