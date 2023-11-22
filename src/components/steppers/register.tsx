@@ -48,7 +48,6 @@ const registerInput = z
         new RegExp(/^\(?[1-9]{2}\)? ?(?:[2-8]|9[0-9])[0-9]{3}\-?[0-9]{4}$/),
         { message: "Telefone inválido" }
       ),
-    pix_type: z.string().min(1, { message: "Selecione um meio pix" }),
     pix_key: z.string().min(1, { message: "Selecione um pix" }),
     password: z
       .string()
@@ -95,6 +94,7 @@ export default function RegisterStepper({ onClose }: { onClose: () => void }) {
           "Cadastro realizado com sucesso. Faça o login agora mesmo."
         );
         onClose();
+        window.location.reload();
       },
       onError: (error: any) => {
         console.log(error);
@@ -114,7 +114,7 @@ export default function RegisterStepper({ onClose }: { onClose: () => void }) {
   );
 
   const handleChangePixType = (event) => {
-    setValue("pix_type", event.target.value);
+    // setValue("pix_type", event.target.value);
   };
 
   const onSubmitHandler: SubmitHandler<RegisterInput> = (values) => {
@@ -152,7 +152,11 @@ export default function RegisterStepper({ onClose }: { onClose: () => void }) {
       );
     }
     if (activeStep === 3) {
-      trigger(["cpf", "pix_type", "pix_key"]).then((isValid) => {
+      trigger([
+        "cpf",
+        // "pix_type",
+        "pix_key",
+      ]).then((isValid) => {
         if (isValid) {
           onSubmitHandler(getValues());
         }

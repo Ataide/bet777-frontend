@@ -16,7 +16,9 @@ export default function Players({
 }) {
   return (
     <Box display={"flex"} gap={1} alignItems={"center"}>
-      <img src={DOMAIN_URL + home_image} width={40} height={40} alt="" />
+      {home_image !== null && (
+        <img src={DOMAIN_URL + home_image} width={40} height={40} alt="" />
+      )}
       <Typography variant="body2" color="primary">
         {home}
       </Typography>
@@ -24,7 +26,9 @@ export default function Players({
       <Typography variant="body2" color="primary">
         {visitant}
       </Typography>
-      <img src={DOMAIN_URL + visitant_image} width={40} height={40} alt="" />
+      {visitant_image && (
+        <img src={DOMAIN_URL + visitant_image} width={40} height={40} alt="" />
+      )}
     </Box>
   );
 }

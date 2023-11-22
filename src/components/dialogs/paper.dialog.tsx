@@ -47,9 +47,7 @@ export default function PaperBetDialog({
   } = useContext(AppContext);
   const queryClient = useQueryClient();
   const [showDetails, setShowDetails] = useState(false);
-  const onSubmitHandler: SubmitHandler<BetInput> = async (
-    values: IBetRequest
-  ) => {
+  const onSubmitHandler: SubmitHandler<any> = async (values: IBetRequest) => {
     paper && callMutate(paper);
   };
 
