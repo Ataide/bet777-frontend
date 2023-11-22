@@ -6,7 +6,7 @@ interface IAppContextProps {
   paper: IPaper | null;
   addBetToPaper: (bet: IBet) => void;
   removeBetFromPaper: (bet: IBet) => void;
-  updateOnlyProfit: () => void;
+  updateOnlyProfit: (profit: number) => void;
   updatePaperAmount: (value: number) => void;
   clearPaper: () => void;
 }
@@ -64,10 +64,10 @@ export const AppProvider = ({ children }: PropsWithChildren) => {
     });
   };
 
-  const updateOnlyProfit = () => {
+  const updateOnlyProfit = (profit: number) => {
     _setPaper({
       ...paper,
-      profit: paper.amount * paper.rate,
+      profit: profit,
     });
   };
 

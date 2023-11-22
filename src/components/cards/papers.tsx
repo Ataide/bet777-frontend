@@ -26,6 +26,7 @@ import { insertPaper } from "../../services/BetService";
 import { toast } from "react-toastify";
 import { CurrencyAmountMask, CurrencyMask } from "../masks/text.masks";
 import { formatter } from "../../utils/utils";
+import { unstable_batchedUpdates } from "react-dom";
 
 const betInput = z.object({
   amount: z.string().min(1, { message: "Valor é obrigatório." }),
@@ -39,6 +40,7 @@ export default function PaperCard() {
     addBetToPaper,
     removeBetFromPaper,
     updatePaperAmount,
+    updateOnlyProfit,
     clearPaper,
   } = useContext(AppContext);
   const queryClient = useQueryClient();
@@ -48,8 +50,13 @@ export default function PaperCard() {
   useEffect(() => {
     if (paper?.amount) {
       set_Profit(paper?.amount * paper?.rate);
+      updateOnlyProfit(paper?.amount * paper?.rate);
     }
   }, [paper]);
+
+  const resetValuesInPaper = () => {
+    set_Profit(0);
+  };
 
   const onSubmitHandler: SubmitHandler<BetInput> = async (
     values: IBetRequest
@@ -66,6 +73,8 @@ export default function PaperCard() {
   } = useMutation((_paper: IPaper) => insertPaper(_paper), {
     onSuccess: (data) => {
       clearPaper();
+      setValue("amount", "");
+      resetValuesInPaper();
 
       toast.success("Aposta realizada com sucesso.", {
         position: "top-right",
