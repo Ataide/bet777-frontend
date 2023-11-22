@@ -56,22 +56,7 @@ export default function TransactionTable() {
     <>
       <Box display={"flex"} gap={2} mb={2}>
         <DateField value={date} onChange={(newValue) => setDate(newValue)} />
-        {/* <DatePicker
-          sx={({ palette }) => ({
-            "& .MuiOutlinedInput-root": {
-              color: palette.common.white,
-              background: palette.background.default,
-            },
-            "& .MuiSvgIcon-root": {
-              color: palette.primary.main,
-            },
-            ".MuiDayCalendar-weekDayLabel": {
-              color: palette.primary.main,
-            },
-          })}
-          value={date}
-          onChange={(newValue) => setDate(newValue)}
-        /> */}
+
         <RadioGroup
           aria-labelledby="tipo-de-transacao"
           name="type"
