@@ -17,6 +17,7 @@ import Radio from "@mui/material/Radio";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Box from "@mui/material/Box";
 import DateField from "../date/datePicker";
+import Grid from "@mui/material/Grid";
 
 export default function TransactionTable() {
   const [value, setValue] = React.useState("");
@@ -32,29 +33,32 @@ export default function TransactionTable() {
 
   return (
     <>
-      <Box display={"flex"} gap={2} mb={2}>
-        <DateField value={date} onChange={(newValue) => setDate(newValue)} />
-
-        <RadioGroup
-          aria-labelledby="tipo-de-transacao"
-          name="type"
-          value={value}
-          onChange={handleTypeChange}
-          row
-        >
-          <FormControlLabel
-            value="deposit"
-            control={<Radio />}
-            label="Depósitos"
-          />
-          <FormControlLabel
-            value="withdraw"
-            control={<Radio />}
-            label="Saques"
-          />
-          <FormControlLabel value="" control={<Radio />} label="Todas" />
-        </RadioGroup>
-      </Box>
+      <Grid container spacing={2} alignItems={"center"} padding={2}>
+        <Grid item xs={12} md={6}>
+          <DateField value={date} onChange={(newValue) => setDate(newValue)} />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <RadioGroup
+            aria-labelledby="tipo-de-transacao"
+            name="type"
+            value={value}
+            onChange={handleTypeChange}
+            row
+          >
+            <FormControlLabel
+              value="deposit"
+              control={<Radio />}
+              label="Depósitos"
+            />
+            <FormControlLabel
+              value="withdraw"
+              control={<Radio />}
+              label="Saques"
+            />
+            <FormControlLabel value="" control={<Radio />} label="Todas" />
+          </RadioGroup>
+        </Grid>
+      </Grid>
       <TableContainer component={Paper}>
         <Table aria-label="transacoes">
           <TableHead>
@@ -63,7 +67,7 @@ export default function TransactionTable() {
                 "& td, th": { border: 0 },
               }}
             >
-              <TableCell sx={{ width: 250 }}>Data/Hora</TableCell>
+              <TableCell sx={{ width: 100 }}>Data/Hora</TableCell>
               <TableCell align="right">Tipo</TableCell>
               <TableCell align="right">Quantia</TableCell>
             </TableRow>
@@ -84,9 +88,15 @@ export default function TransactionTable() {
                     {TransactionType[row.type]}
                   </TableCell>
                   <TableCell align="right">
-                    <Typography variant="body2" color="primary">
-                      R$ {(row.deposit + row.withdraw).toFixed(2)}
-                    </Typography>
+                    {row.type === "deposit" ? (
+                      <Typography variant="body2" color="primary">
+                        R$ {(row.deposit + row.withdraw).toFixed(2)}
+                      </Typography>
+                    ) : (
+                      <Typography variant="body2" color="error">
+                        R$ -{(row.deposit + row.withdraw).toFixed(2)}
+                      </Typography>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}

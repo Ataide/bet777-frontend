@@ -17,9 +17,15 @@ import InputAdornment from "@mui/material/InputAdornment";
 import { useAuthUser } from "../../hooks/useAuthUser";
 import { toast } from "react-toastify";
 import { depositToWalletFn } from "../../services/WalletService";
-import DepositConfirmationDialog from "../../components/dialogs/withdraw.dialog";
-import WithdrawConfirmationDialog from "../../components/dialogs/withdraw.dialog";
 import { CurrencyMask } from "../../components/masks/text.masks";
+import BottomNavigation from "@mui/material/BottomNavigation";
+import BottomNavigationAction from "@mui/material/BottomNavigationAction";
+import Hidden from "@mui/material/Hidden";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import ListAltIcon from "@mui/icons-material/ListAlt";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 
 const depositInput = z.object({
   name: z.string().min(1, { message: "Digite seu nome." }),
@@ -99,30 +105,33 @@ export default function DepositPage() {
   return (
     <>
       <Grid container>
-        <Grid item xs={3}>
-          <Box p={4}>
+        <Hidden smDown implementation="css">
+          <Grid item xs={3}>
+            <Box p={4}>
+              <Paper>
+                <MenuList sx={{ p: 2 }}>
+                  <MenuItem onClick={() => navigate("/conta")}>Conta</MenuItem>
+                  <MenuItem onClick={() => navigate("/conta/bets")}>
+                    Minhas bets
+                  </MenuItem>
+                  <MenuItem selected>Depósitos</MenuItem>
+                  <MenuItem onClick={() => navigate("/conta/saque")}>
+                    Saques
+                  </MenuItem>
+                  <MenuItem onClick={() => navigate("/conta/transacoes")}>
+                    Transações
+                  </MenuItem>
+                  <MenuItem>Pix</MenuItem>
+                </MenuList>
+              </Paper>
+            </Box>
+          </Grid>
+        </Hidden>
+
+        <Grid item xs={12} md={7}>
+          <Box p={{ xs: 2, md: 4 }}>
             <Paper>
-              <MenuList sx={{ p: 2 }}>
-                <MenuItem onClick={() => navigate("/conta")}>Conta</MenuItem>
-                <MenuItem onClick={() => navigate("/conta/bets")}>
-                  Minhas bets
-                </MenuItem>
-                <MenuItem selected>Depósitos</MenuItem>
-                <MenuItem onClick={() => navigate("/conta/saque")}>
-                  Saques
-                </MenuItem>
-                <MenuItem onClick={() => navigate("/conta/transacoes")}>
-                  Transações
-                </MenuItem>
-                <MenuItem>Pix</MenuItem>
-              </MenuList>
-            </Paper>
-          </Box>
-        </Grid>
-        <Grid item xs={7}>
-          <Box p={4}>
-            <Paper sx={{ maxWidth: "sm" }}>
-              <Box p={4}>
+              <Box p={{ xs: 2, md: 4 }}>
                 <Typography variant="h5"> Depósito para apostas</Typography>
                 <Box
                   component="form"
@@ -246,6 +255,42 @@ export default function DepositPage() {
           </Box>
         </Grid>
       </Grid>
+      <Paper
+        sx={{
+          position: "fixed",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          display: { sm: "none" },
+          zIndex: 100,
+        }}
+        elevation={3}
+      >
+        <BottomNavigation
+          showLabels={false}
+          value={"/conta/deposito"}
+          onChange={(e, newValue) => {
+            setTimeout(() => {
+              navigate(newValue);
+            }, 500);
+          }}
+        >
+          <BottomNavigationAction value="/conta" icon={<AccountBoxIcon />} />
+          <BottomNavigationAction value="/conta/bets" icon={<ListAltIcon />} />
+          <BottomNavigationAction
+            value="/conta/deposito"
+            icon={<AccountBalanceIcon />}
+          />
+          <BottomNavigationAction
+            value="/conta/saque"
+            icon={<CurrencyExchangeIcon />}
+          />
+          <BottomNavigationAction
+            value="/conta/transacoes"
+            icon={<ReceiptLongIcon />}
+          />
+        </BottomNavigation>
+      </Paper>
     </>
   );
 }

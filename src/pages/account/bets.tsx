@@ -18,66 +18,111 @@ import { IPaper } from "../../types";
 import dayjs from "dayjs";
 import { BetResult } from "../../enums";
 import { formatter, getPalpitesFromBet } from "../../utils/utils";
+import BottomNavigation from "@mui/material/BottomNavigation";
+import BottomNavigationAction from "@mui/material/BottomNavigationAction";
+import Hidden from "@mui/material/Hidden";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import ListAltIcon from "@mui/icons-material/ListAlt";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 
 export default function BetsPage() {
   const navigate = useNavigate();
   return (
     <>
       <Grid container>
-        <Grid item xs={3}>
-          <Box p={4}>
-            <Paper>
-              <MenuList sx={{ p: 2 }}>
-                <MenuItem onClick={() => navigate("/conta")}>Conta</MenuItem>
-                <MenuItem selected>Minhas bets</MenuItem>
-                <MenuItem onClick={() => navigate("/conta/deposito")}>
-                  Depósitos
-                </MenuItem>
-                <MenuItem onClick={() => navigate("/conta/saque")}>
-                  Saques
-                </MenuItem>
-                <MenuItem onClick={() => navigate("/conta/transacoes")}>
-                  Transações
-                </MenuItem>
-                <MenuItem>Pix</MenuItem>
-              </MenuList>
-            </Paper>
-          </Box>
-        </Grid>
-        <Grid item xs={7}>
-          <Box p={4}>
-            <>
-              <Box p={4}>
-                <Accordion>
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="abertas-content"
-                    id="abertas-header"
-                  >
-                    <Typography>Apostas abertas</Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <OpenPapers />
-                  </AccordionDetails>
-                </Accordion>
-                <br />
-                <Accordion>
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="fechadas-content"
-                    id="fechadas-header"
-                  >
-                    <Typography>Apostas fechadas</Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <ClosedPapers />
-                  </AccordionDetails>
-                </Accordion>
-              </Box>
-            </>
+        <Hidden smDown>
+          <Grid item xs={3}>
+            <Box p={4}>
+              <Paper>
+                <MenuList sx={{ p: 2 }}>
+                  <MenuItem onClick={() => navigate("/conta")}>Conta</MenuItem>
+                  <MenuItem selected>Minhas bets</MenuItem>
+                  <MenuItem onClick={() => navigate("/conta/deposito")}>
+                    Depósitos
+                  </MenuItem>
+                  <MenuItem onClick={() => navigate("/conta/saque")}>
+                    Saques
+                  </MenuItem>
+                  <MenuItem onClick={() => navigate("/conta/transacoes")}>
+                    Transações
+                  </MenuItem>
+                  <MenuItem>Pix</MenuItem>
+                </MenuList>
+              </Paper>
+            </Box>
+          </Grid>
+        </Hidden>
+
+        <Grid item xs={12} md={7}>
+          <Box p={{ xs: 2, md: 4 }}>
+            <Box p={{ xs: 0, md: 4 }}>
+              <Accordion>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="abertas-content"
+                  id="abertas-header"
+                >
+                  <Typography>Apostas abertas</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <OpenPapers />
+                </AccordionDetails>
+              </Accordion>
+              <br />
+              <Accordion>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="fechadas-content"
+                  id="fechadas-header"
+                >
+                  <Typography>Apostas fechadas</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <ClosedPapers />
+                </AccordionDetails>
+              </Accordion>
+            </Box>
           </Box>
         </Grid>
       </Grid>
+      <Paper
+        sx={{
+          position: "fixed",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          display: { sm: "none" },
+          zIndex: 100,
+        }}
+        elevation={3}
+      >
+        <BottomNavigation
+          showLabels={false}
+          value={"/conta/bets"}
+          onChange={(e, newValue) => {
+            setTimeout(() => {
+              navigate(newValue);
+            }, 500);
+          }}
+        >
+          <BottomNavigationAction value="/conta" icon={<AccountBoxIcon />} />
+          <BottomNavigationAction value="/conta/bets" icon={<ListAltIcon />} />
+          <BottomNavigationAction
+            value="/conta/deposito"
+            icon={<AccountBalanceIcon />}
+          />
+          <BottomNavigationAction
+            value="/conta/saque"
+            icon={<CurrencyExchangeIcon />}
+          />
+          <BottomNavigationAction
+            value="/conta/transacoes"
+            icon={<ReceiptLongIcon />}
+          />
+        </BottomNavigation>
+      </Paper>
     </>
   );
 }

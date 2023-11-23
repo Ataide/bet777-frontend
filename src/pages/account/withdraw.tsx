@@ -21,6 +21,15 @@ import { withdrawWalletFn } from "../../services/WalletService";
 import InfoIcon from "@mui/icons-material/Info";
 import WithdrawConfirmationDialog from "../../components/dialogs/withdraw.dialog";
 import { CurrencyMask } from "../../components/masks/text.masks";
+import BottomNavigation from "@mui/material/BottomNavigation";
+import BottomNavigationAction from "@mui/material/BottomNavigationAction";
+import Hidden from "@mui/material/Hidden";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import ListAltIcon from "@mui/icons-material/ListAlt";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+
 const withdrawInput = z.object({
   wallet_amount: z.string().min(1, { message: "Valor da carteira" }),
   amount: z.string().min(1, { message: "Valor deve será maior que 10" }),
@@ -108,30 +117,33 @@ export default function WithdrawPage() {
         onClose={() => setOpenConfirmDialog(false)}
       />
       <Grid container>
-        <Grid item xs={3}>
-          <Box p={4}>
+        <Hidden smDown implementation="css">
+          <Grid item xs={3}>
+            <Box p={4}>
+              <Paper>
+                <MenuList sx={{ p: 2 }}>
+                  <MenuItem onClick={() => navigate("/conta")}>Conta</MenuItem>
+                  <MenuItem onClick={() => navigate("/conta/bets")}>
+                    Minhas bets
+                  </MenuItem>
+                  <MenuItem onClick={() => navigate("/conta/deposito")}>
+                    Depósitos
+                  </MenuItem>
+                  <MenuItem selected>Saques</MenuItem>
+                  <MenuItem onClick={() => navigate("/conta/transacoes")}>
+                    Transações
+                  </MenuItem>
+                  <MenuItem>Pix</MenuItem>
+                </MenuList>
+              </Paper>
+            </Box>
+          </Grid>
+        </Hidden>
+
+        <Grid item xs={12} md={7}>
+          <Box p={{ xs: 2, md: 4 }}>
             <Paper>
-              <MenuList sx={{ p: 2 }}>
-                <MenuItem onClick={() => navigate("/conta")}>Conta</MenuItem>
-                <MenuItem onClick={() => navigate("/conta/bets")}>
-                  Minhas bets
-                </MenuItem>
-                <MenuItem onClick={() => navigate("/conta/deposito")}>
-                  Depósitos
-                </MenuItem>
-                <MenuItem selected>Saques</MenuItem>
-                <MenuItem onClick={() => navigate("/conta/transacoes")}>
-                  Transações
-                </MenuItem>
-                <MenuItem>Pix</MenuItem>
-              </MenuList>
-            </Paper>
-          </Box>
-        </Grid>
-        <Grid item xs={7}>
-          <Box p={4}>
-            <Paper sx={{ maxWidth: "sm" }}>
-              <Box p={4}>
+              <Box p={{ xs: 2, md: 4 }}>
                 <Typography variant="h5"> Saque</Typography>
                 <Box
                   component="form"
@@ -282,6 +294,42 @@ export default function WithdrawPage() {
           </Box>
         </Grid>
       </Grid>
+      <Paper
+        sx={{
+          position: "fixed",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          display: { sm: "none" },
+          zIndex: 100,
+        }}
+        elevation={3}
+      >
+        <BottomNavigation
+          showLabels={false}
+          value={"/conta/saque"}
+          onChange={(e, newValue) => {
+            setTimeout(() => {
+              navigate(newValue);
+            }, 500);
+          }}
+        >
+          <BottomNavigationAction value="/conta" icon={<AccountBoxIcon />} />
+          <BottomNavigationAction value="/conta/bets" icon={<ListAltIcon />} />
+          <BottomNavigationAction
+            value="/conta/deposito"
+            icon={<AccountBalanceIcon />}
+          />
+          <BottomNavigationAction
+            value="/conta/saque"
+            icon={<CurrencyExchangeIcon />}
+          />
+          <BottomNavigationAction
+            value="/conta/transacoes"
+            icon={<ReceiptLongIcon />}
+          />
+        </BottomNavigation>
+      </Paper>
     </>
   );
 }

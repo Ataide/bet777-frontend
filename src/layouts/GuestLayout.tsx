@@ -67,6 +67,8 @@ import RegisterDialog from "../components/dialogs/register.dialog";
 import Paper from "@mui/material/Paper";
 import WalletCard from "../components/cards/wallet";
 import PaperCard from "../components/cards/papers";
+import Fab from "@mui/material/Fab";
+import CloseIcon from "@mui/icons-material/Close";
 
 const drawerWidth = 299;
 
@@ -150,6 +152,7 @@ export default function ResponsiveDrawer() {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [openSideRight, setOpenSideRight] = React.useState(false);
 
   const [isMobileOpen, setIsMobileOpen] = React.useState(false);
 
@@ -317,30 +320,6 @@ export default function ResponsiveDrawer() {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      {/* <AppBar
-        position="fixed"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: open,
-        })}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={
-              isSmallScreen ? handleSmallScreenDrawerToggle : handleDrawerOpen
-            }
-            edge="start"
-            className={clsx(classes.menuButton, open && classes.hide)}
-          >
-            <Menu />
-          </IconButton>
-          <Typography variant="h6" noWrap>
-            Responsive drawer
-          </Typography>
-        </Toolbar>
-      </AppBar> */}
-
       <AppBar
         position="fixed"
         color="secondary"
@@ -366,8 +345,32 @@ export default function ResponsiveDrawer() {
             <Box display={"flex"} flex={1} justifyContent={"center"}>
               <img src={logo} width={78} alt="" />
             </Box>
+
+            <Box display={"flex"} gap={2}>
+              {!user ? (
+                <>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => setOpenRegister(true)}
+                  >
+                    <Typography>Cadastro</Typography>
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => setOpenLogin(true)}
+                  >
+                    <Typography>Login</Typography>
+                  </Button>
+                </>
+              ) : (
+                <AccountMenu name={user?.name} />
+              )}
+            </Box>
           </Toolbar>
         </Hidden>
+
         <Hidden mdDown implementation="css">
           <Toolbar>
             <Box
@@ -467,6 +470,15 @@ export default function ResponsiveDrawer() {
         {/* To fix margin of toolbar */}
         <Toolbar />
         <Outlet />
+        <Box position={"fixed"} bottom={30} right={30}>
+          <Fab
+            color="primary"
+            aria-label="add"
+            onClick={() => setOpenSideRight(!openSideRight)}
+          >
+            <MenuIcon />
+          </Fab>
+        </Box>
       </Box>
 
       <Box
@@ -479,18 +491,26 @@ export default function ResponsiveDrawer() {
         aria-label="nav-links"
       >
         <Drawer
-          variant="permanent"
+          variant={isSmallScreen ? "temporary" : "persistent"}
           anchor="right"
           sx={{
-            display: { xs: "none", sm: "block" },
+            display: { xs: "block", sm: "block" },
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: righrDrawerWidth,
             },
           }}
-          open={true}
+          onClose={() => setOpenSideRight(!openSideRight)}
+          open={isSmallScreen ? openSideRight : true}
         >
-          <Toolbar />
+          <div className={classes.drawerHeader}>
+            <IconButton color="primary" onClick={() => setOpenSideRight(false)}>
+              <CloseIcon />
+            </IconButton>
+          </div>
+          <Hidden mdDown>
+            <Toolbar />
+          </Hidden>
           <Paper>
             <Box p={2} mt={4} display={"flex"} flexDirection={"column"} gap={4}>
               <WalletCard />

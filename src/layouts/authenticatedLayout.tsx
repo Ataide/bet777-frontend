@@ -338,7 +338,10 @@ export default function AuthenticatedLayout() {
             value="/tarefas"
             icon={<PlaylistAddCheckIcon />}
           />
-          <BottomNavigationAction value="/settings" icon={<SettingsIcon />} />
+          <BottomNavigationAction
+            value="/conta/transacoes"
+            icon={<ReceiptLongIcon />}
+          />
         </BottomNavigation>
       </Paper> */}
       <Box

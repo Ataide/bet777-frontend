@@ -23,6 +23,19 @@ import {
 } from "../../components/masks/text.masks";
 import { updateProfileUserFn } from "../../api/authApi";
 import { toast } from "react-toastify";
+import BottomNavigation from "@mui/material/BottomNavigation";
+import BottomNavigationAction from "@mui/material/BottomNavigationAction";
+import { HomeIcon } from "../../components/icons/sidebar";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import EventNoteIcon from "@mui/icons-material/EventNote";
+import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
+import SettingsIcon from "@mui/icons-material/Settings";
+import Hidden from "@mui/material/Hidden";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import ListAltIcon from "@mui/icons-material/ListAlt";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 
 const profileInput = z.object({
   name: z.string().min(1, { message: "Insira seu usuario" }).optional(),
@@ -113,32 +126,35 @@ export default function AccountPage() {
   return (
     <>
       <Grid container>
-        <Grid item xs={3}>
-          <Box p={4}>
+        <Hidden smDown>
+          <Grid item xs={3}>
+            <Box p={4}>
+              <Paper>
+                <MenuList sx={{ p: 2 }}>
+                  <MenuItem selected>Conta</MenuItem>
+                  <MenuItem onClick={() => navigate("/conta/bets")}>
+                    Minhas bets
+                  </MenuItem>
+                  <MenuItem onClick={() => navigate("/conta/deposito")}>
+                    Depósitos
+                  </MenuItem>
+                  <MenuItem onClick={() => navigate("/conta/saque")}>
+                    Saques
+                  </MenuItem>
+                  <MenuItem onClick={() => navigate("/conta/transacoes")}>
+                    Transações
+                  </MenuItem>
+                  <MenuItem>Pix</MenuItem>
+                </MenuList>
+              </Paper>
+            </Box>
+          </Grid>
+        </Hidden>
+
+        <Grid item xs={12} md={7}>
+          <Box p={{ xs: 2, md: 4 }}>
             <Paper>
-              <MenuList sx={{ p: 2 }}>
-                <MenuItem selected>Conta</MenuItem>
-                <MenuItem onClick={() => navigate("/conta/bets")}>
-                  Minhas bets
-                </MenuItem>
-                <MenuItem onClick={() => navigate("/conta/deposito")}>
-                  Depósitos
-                </MenuItem>
-                <MenuItem onClick={() => navigate("/conta/saque")}>
-                  Saques
-                </MenuItem>
-                <MenuItem onClick={() => navigate("/conta/transacoes")}>
-                  Transações
-                </MenuItem>
-                <MenuItem>Pix</MenuItem>
-              </MenuList>
-            </Paper>
-          </Box>
-        </Grid>
-        <Grid item xs={7}>
-          <Box p={4}>
-            <Paper>
-              <Box p={4}>
+              <Box p={{ xs: 2, md: 4 }}>
                 <Box
                   component="form"
                   id="form_edit"
@@ -151,7 +167,219 @@ export default function AccountPage() {
                   }}
                   gap={2}
                 >
-                  <Box
+                  <Grid container spacing={2}>
+                    <Grid item xs={12} md={6}>
+                      <Typography
+                        variant="caption"
+                        color="white"
+                        fontWeight={600}
+                      >
+                        Nome
+                      </Typography>
+                      <Controller
+                        name="name"
+                        control={control}
+                        disabled={!editing}
+                        render={({ field: { ref, ...field } }) => (
+                          <TextField
+                            InputLabelProps={{ shrink: false }}
+                            margin="normal"
+                            // disabled={isLoading}
+                            fullWidth
+                            placeholder="Nome"
+                            error={Boolean(errors.name)}
+                            helperText={errors.name?.message}
+                            inputRef={ref}
+                            {...field}
+                          />
+                        )}
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Typography
+                        variant="caption"
+                        color="white"
+                        fontWeight={600}
+                      >
+                        Email
+                      </Typography>
+                      <Controller
+                        name="email"
+                        control={control}
+                        disabled={!editing}
+                        render={({ field: { ref, ...field } }) => (
+                          <TextField
+                            margin="normal"
+                            // disabled={isLoading}
+                            fullWidth
+                            placeholder="Email"
+                            error={Boolean(errors.email)}
+                            helperText={errors.email?.message}
+                            InputLabelProps={{ shrink: false }}
+                            inputRef={ref}
+                            {...field}
+                          />
+                        )}
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Typography
+                        variant="caption"
+                        color="white"
+                        fontWeight={600}
+                      >
+                        CPF
+                      </Typography>
+                      <Controller
+                        name="cpf"
+                        control={control}
+                        disabled={!editing}
+                        render={({ field: { ref, ...field } }) => (
+                          <TextField
+                            margin="normal"
+                            // disabled={isLoading}
+                            fullWidth
+                            placeholder="Cpf"
+                            error={Boolean(errors.cpf)}
+                            helperText={errors.cpf?.message}
+                            InputLabelProps={{ shrink: false }}
+                            InputProps={{
+                              inputComponent: CpfTextMask as any,
+                            }}
+                            inputRef={ref}
+                            {...field}
+                          />
+                        )}
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Typography
+                        variant="caption"
+                        color="white"
+                        fontWeight={600}
+                      >
+                        Usuário
+                      </Typography>
+                      <Controller
+                        name="name"
+                        control={control}
+                        disabled={!editing}
+                        render={({ field: { ref, ...field } }) => (
+                          <TextField
+                            margin="normal"
+                            // disabled={isLoading}
+                            fullWidth
+                            placeholder="Usuário"
+                            InputLabelProps={{ shrink: false }}
+                            error={Boolean(errors.name)}
+                            helperText={errors.name?.message}
+                            inputRef={ref}
+                            {...field}
+                          />
+                        )}
+                      />
+                    </Grid>
+
+                    <Grid item xs={12} md={6}>
+                      <Typography
+                        variant="caption"
+                        color="white"
+                        fontWeight={600}
+                      >
+                        Data de nascimento
+                      </Typography>
+                      <Controller
+                        name="birthday"
+                        control={control}
+                        disabled={!editing}
+                        render={({ field: { ref, ...field } }) => (
+                          <TextField
+                            margin="normal"
+                            // disabled={isLoading}
+                            fullWidth
+                            placeholder="Birthday"
+                            error={Boolean(errors.birthday)}
+                            helperText={errors.birthday?.message}
+                            InputLabelProps={{ shrink: false }}
+                            InputProps={{
+                              inputComponent: DateTextMask as any,
+                            }}
+                            inputRef={ref}
+                            {...field}
+                          />
+                        )}
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Typography
+                        variant="caption"
+                        color="white"
+                        fontWeight={600}
+                      >
+                        Chave Pix
+                      </Typography>
+                      <Controller
+                        name="pix_key"
+                        control={control}
+                        disabled={!editing}
+                        render={({ field: { ref, ...field } }) => (
+                          <TextField
+                            margin="normal"
+                            fullWidth
+                            placeholder="Pix_key"
+                            error={Boolean(errors.pix_key)}
+                            helperText={errors.pix_key?.message}
+                            InputLabelProps={{ shrink: false }}
+                            inputRef={ref}
+                            {...field}
+                          />
+                        )}
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Typography
+                        variant="caption"
+                        color="white"
+                        fontWeight={600}
+                      >
+                        Telefone
+                      </Typography>
+
+                      <Controller
+                        name="phone"
+                        control={control}
+                        disabled={!editing}
+                        render={({ field: { ref, ...field } }) => (
+                          <TextField
+                            margin="normal"
+                            fullWidth
+                            InputProps={{
+                              inputComponent: PhoneTextMask as any,
+                              startAdornment: (
+                                <InputAdornment position="start">
+                                  <Typography
+                                    variant="body1"
+                                    fontWeight={400}
+                                    sx={{ color: "#fff" }}
+                                  >
+                                    +55
+                                  </Typography>
+                                </InputAdornment>
+                              ),
+                            }}
+                            placeholder="(11) XXXXX-XXXX"
+                            InputLabelProps={{ shrink: false }}
+                            error={Boolean(errors.phone)}
+                            helperText={errors.phone?.message}
+                            inputRef={ref}
+                            {...field}
+                          />
+                        )}
+                      />
+                    </Grid>
+                  </Grid>
+
+                  {/* <Box
                     display="flex"
                     flexDirection="column"
                     gap={2}
@@ -375,7 +603,7 @@ export default function AccountPage() {
                         )}
                       />
                     </Box>
-                  </Box>
+                  </Box> */}
                 </Box>
 
                 <Box py={4} display={"flex"} justifyContent={"end"}>
@@ -414,6 +642,42 @@ export default function AccountPage() {
           </Box>
         </Grid>
       </Grid>
+      <Paper
+        sx={{
+          position: "fixed",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          display: { sm: "none" },
+          zIndex: 100,
+        }}
+        elevation={3}
+      >
+        <BottomNavigation
+          showLabels={false}
+          value={"/conta"}
+          onChange={(e, newValue) => {
+            setTimeout(() => {
+              navigate(newValue);
+            }, 500);
+          }}
+        >
+          <BottomNavigationAction value="/conta" icon={<AccountBoxIcon />} />
+          <BottomNavigationAction value="/conta/bets" icon={<ListAltIcon />} />
+          <BottomNavigationAction
+            value="/conta/deposito"
+            icon={<AccountBalanceIcon />}
+          />
+          <BottomNavigationAction
+            value="/conta/saque"
+            icon={<CurrencyExchangeIcon />}
+          />
+          <BottomNavigationAction
+            value="/conta/transacoes"
+            icon={<ReceiptLongIcon />}
+          />
+        </BottomNavigation>
+      </Paper>
     </>
   );
 }
