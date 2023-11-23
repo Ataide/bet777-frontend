@@ -307,7 +307,7 @@ export default function AuthenticatedLayout() {
         <Toolbar />
         <Outlet />
       </Box>
-      <Paper
+      {/* <Paper
         sx={{
           position: "fixed",
           bottom: 0,
@@ -340,7 +340,7 @@ export default function AuthenticatedLayout() {
           />
           <BottomNavigationAction value="/settings" icon={<SettingsIcon />} />
         </BottomNavigation>
-      </Paper>
+      </Paper> */}
       <Box
         component="nav"
         sx={{

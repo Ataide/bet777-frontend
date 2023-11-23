@@ -5,16 +5,6 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";
-import {
-  Alert,
-  Container,
-  Divider,
-  Fade,
-  InputAdornment,
-  Link,
-  Paper,
-  TextField,
-} from "@mui/material";
 import { z } from "zod";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,6 +14,13 @@ import { AppContext } from "../../contexts/AppContext";
 import { useMutation, useQueryClient } from "react-query";
 import { insertPaper } from "../../services/BetService";
 import { toast } from "react-toastify";
+import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
+import Divider from "@mui/material/Divider/Divider";
+import TextField from "@mui/material/TextField";
+import Fade from "@mui/material/Fade";
+import InputAdornment from "@mui/material/InputAdornment";
+import Alert from "@mui/material/Alert";
 
 const betInput = z.object({
   amount: z.number().min(1, { message: "Valor é obrigatório." }),

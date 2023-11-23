@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useState } from "react";
+import { createContext, PropsWithChildren, useEffect, useState } from "react";
 import { IBet, IPaper } from "../types";
 import { useStateContext } from ".";
 
@@ -27,6 +27,7 @@ export const AppProvider = ({ children }: PropsWithChildren) => {
   });
 
   const addBetToPaper = (_bet: IBet) => {
+
     const alreadyGameInPaper = paper.bets.some(
       (bet) => bet.game_id === _bet.game_id
     );
@@ -80,6 +81,11 @@ export const AppProvider = ({ children }: PropsWithChildren) => {
       profit: 0,
     });
   };
+
+  // useEffect(() => {
+
+
+  // }, [paper]);
 
   return (
     <AppContext.Provider

@@ -8,8 +8,8 @@ import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import CommentIcon from "@mui/icons-material/Comment";
 import Box from "@mui/material/Box";
-import { Typography } from "@mui/material";
 import { FutebolIcon } from "../icons/sidebar";
+import Typography from "@mui/material/Typography";
 
 interface ICheckboxList {
   gameType: number;

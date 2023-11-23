@@ -5,10 +5,11 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";
-import { Alert, Divider } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useAuthUser } from "../../hooks/useAuthUser";
 import InfoIcon from "@mui/icons-material/Info";
+import Divider from "@mui/material/Divider/Divider";
+import Alert from "@mui/material/Alert";
 
 export default function WithdrawConfirmationDialog({
   amount,

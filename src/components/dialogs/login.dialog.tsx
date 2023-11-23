@@ -5,7 +5,6 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";
-import { Link, TextField } from "@mui/material";
 import { z } from "zod";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,6 +17,8 @@ import { useMutation, useQuery } from "react-query";
 import { FORGOTPASSWORD_URL, getMeFn, loginUserFn } from "../../api/authApi";
 import { toast } from "react-toastify";
 import { useLayout } from "../../hooks/useLayout";
+import Link from "@mui/material/Link/Link";
+import TextField from "@mui/material/TextField";
 
 const loginInput = z.object({
   email: z.string().min(1, { message: "Email é obrigatório." }).email({

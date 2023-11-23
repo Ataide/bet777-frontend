@@ -5,7 +5,6 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";
-import { DialogTitle, Link, TextField } from "@mui/material";
 import { z } from "zod";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,6 +13,8 @@ import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
 import { useEffect } from "react";
 import RegisterStepper from "../steppers/register";
 import { useLayout } from "../../hooks/useLayout";
+import DialogTitle from "@mui/material/DialogTitle";
+import Link from "@mui/material/Link/Link";
 
 export default function RegisterDialog({
   open,

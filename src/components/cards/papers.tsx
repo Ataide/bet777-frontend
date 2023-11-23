@@ -1,20 +1,7 @@
 import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogContent from "@mui/material/DialogContent";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import CloseIcon from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";
-import {
-  Alert,
-  Container,
-  Divider,
-  Fade,
-  InputAdornment,
-  Link,
-  Paper,
-  TextField,
-} from "@mui/material";
+
 import { ZodNumber, z } from "zod";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -26,7 +13,13 @@ import { insertPaper } from "../../services/BetService";
 import { toast } from "react-toastify";
 import { CurrencyAmountMask, CurrencyMask } from "../masks/text.masks";
 import { formatter } from "../../utils/utils";
-import { unstable_batchedUpdates } from "react-dom";
+import Container from "@mui/material/Container";
+import Fade from "@mui/material/Fade";
+import Alert from "@mui/material/Alert";
+import Paper from "@mui/material/Paper";
+import Divider from "@mui/material/Divider";
+import TextField from "@mui/material/TextField";
+import InputAdornment from "@mui/material/InputAdornment";
 
 const betInput = z.object({
   amount: z.string().min(1, { message: "Valor é obrigatório." }),
@@ -47,17 +40,6 @@ export default function PaperCard() {
   const [showDetails, setShowDetails] = useState(true);
   const [_profit, set_Profit] = useState<number>(0);
 
-  useEffect(() => {
-    if (paper?.amount) {
-      set_Profit(paper?.amount * paper?.rate);
-      updateOnlyProfit(paper?.amount * paper?.rate);
-    }
-  }, [paper]);
-
-  const resetValuesInPaper = () => {
-    set_Profit(0);
-  };
-
   const onSubmitHandler: SubmitHandler<BetInput> = async (
     values: IBetRequest
   ) => {
@@ -74,7 +56,7 @@ export default function PaperCard() {
     onSuccess: (data) => {
       clearPaper();
       setValue("amount", "");
-      resetValuesInPaper();
+      // resetValuesInPaper();
 
       toast.success("Aposta realizada com sucesso.", {
         position: "top-right",
@@ -112,14 +94,15 @@ export default function PaperCard() {
 
   const onChangeBet = (e: React.ChangeEvent<HTMLInputElement>) => {
     const amount = +e.target.value;
-    const paper_rate = paper ? paper.rate : 0;
-    const profit = amount * paper_rate;
-
+    // const paper_rate = paper ? paper.rate : 0;
+    // const profit = amount * paper_rate;
     setValue("amount", String(amount));
-
     updatePaperAmount(amount);
   };
-  //console.log(paper?.quantity);
+
+  useEffect(() => {
+    updatePaperAmount(+getValues("amount"));
+  }, [paper?.bets]);
 
   return (
     <>
@@ -176,9 +159,7 @@ export default function PaperCard() {
                       {showDetails && (
                         <Box p={2}>
                           <Box display={"flex"} flexDirection={"row"} mb={1}>
-                            <Typography variant="caption" color="initial">
-                              Odd:
-                            </Typography>
+                            <Typography variant="caption">Odd:</Typography>
                             <Typography
                               variant="caption"
                               color="primary"
@@ -188,9 +169,7 @@ export default function PaperCard() {
                             </Typography>
                           </Box>
                           <Box display={"flex"} flexDirection={"row"} mb={1}>
-                            <Typography variant="caption" color="initial">
-                              Palpite:
-                            </Typography>
+                            <Typography variant="caption">Palpite:</Typography>
                             <Typography
                               variant="caption"
                               color="primary"
@@ -206,9 +185,7 @@ export default function PaperCard() {
                             justifyContent={"space-between"}
                           >
                             <Box display={"flex"}>
-                              <Typography variant="caption" color="initial">
-                                Jogo:
-                              </Typography>
+                              <Typography variant="caption">Jogo:</Typography>
                               <Typography
                                 variant="caption"
                                 color="primary"
@@ -244,17 +221,13 @@ export default function PaperCard() {
               alignItems={"center"}
             >
               <Box display={"flex"}>
-                <Typography variant="caption" color="initial">
-                  Aposta:
-                </Typography>
+                <Typography variant="caption">Aposta:</Typography>
                 <Typography variant="caption" color="primary" ml={1}>
                   {paper && paper?.bets.length > 1 ? "Múltipla" : "Única"}
                 </Typography>
               </Box>
               <Box display={"flex"}>
-                <Typography variant="caption" color="initial">
-                  Odd:
-                </Typography>
+                <Typography variant="caption">Odd:</Typography>
                 <Typography variant="caption" color="primary" ml={1}>
                   {paper?.rate}
                 </Typography>
@@ -270,9 +243,7 @@ export default function PaperCard() {
               </Box>
             </Box>
             <Box display={"flex"}>
-              <Typography variant="caption" color="initial">
-                Palpite:
-              </Typography>
+              <Typography variant="caption">Palpite:</Typography>
               <Typography variant="caption" color="primary" ml={1}>
                 {paper?.rate}
               </Typography>
@@ -290,9 +261,7 @@ export default function PaperCard() {
             pb={0}
           >
             <Box display={"flex"} flexDirection={"column"}>
-              <Typography variant="caption" color="initial">
-                Valor da aposta:
-              </Typography>
+              <Typography variant="caption">Valor da aposta:</Typography>
 
               <Controller
                 name="amount"
@@ -329,17 +298,9 @@ export default function PaperCard() {
           </Box>
 
           <Box display={"flex"} p={2}>
-            <Typography variant="caption" color="initial">
-              Lucro possível:
-            </Typography>
+            <Typography variant="caption">Lucro possível:</Typography>
             <Typography variant="caption" color="primary" ml={1}>
-              {
-                formatter.format(_profit)
-                // paper?.profit
-                // getValues("amount")
-                //   ? formatter.format(Number(paper?.profit))
-                //   : formatter.format(0)
-              }
+              {formatter.format(paper?.profit ?? 0)}
             </Typography>
           </Box>
 
