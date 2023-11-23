@@ -1,74 +1,53 @@
-// import { Outlet } from "react-router-dom";
-
-// import CssBaseline from "@mui/material/CssBaseline";
-// import ThemeProvider from "@mui/material/styles/ThemeProvider";
-
-// export default function GuestLayout() {
-//   return (
-//     <>
-//       <CssBaseline />
-//       <Outlet />
-//     </>
-//   );
-// }
-import clsx from "clsx";
-import * as React from "react";
-import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
+import { makeStyles } from "@material-ui/core/styles";
+import { default as Menu, default as MenuIcon } from "@mui/icons-material/Menu";
+import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import MuiDrawer from "@mui/material/Drawer";
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import List from "@mui/material/List";
+import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
-import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
+import Drawer from "@mui/material/Drawer";
+import Hidden from "@mui/material/Hidden";
 import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import { styled, useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import clsx from "clsx";
+import * as React from "react";
 import { useEffect, useState } from "react";
-import AppBar from "@mui/material/AppBar";
-import Menu from "@mui/icons-material/Menu";
-import Hidden from "@mui/material/Hidden";
-import Drawer from "@mui/material/Drawer";
-import ChevronLeft from "@mui/icons-material/ChevronLeft";
-import { makeStyles } from "@material-ui/core/styles";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { useLayout } from "../hooks/useLayout";
-import { useAuthUser } from "../hooks/useAuthUser";
-import Button from "@mui/material/Button";
 import AccountMenu from "../components/accountMenu";
+import { useAuthUser } from "../hooks/useAuthUser";
+import { useLayout } from "../hooks/useLayout";
 
-import {
-  FutebolIcon,
-  HomeIcon,
-  FavoriteIcon,
-  VoleiIcon,
-  BasqueteIcon,
-  TenisIcon,
-  FutebolAIcon,
-  BoxeIcon,
-  BaisebolIcon,
-} from "../components/icons/sidebar";
-import Container from "@mui/material/Container";
-import TextField from "@mui/material/TextField";
-import InputAdornment from "@mui/material/InputAdornment";
+import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
+import Container from "@mui/material/Container";
+import Fab from "@mui/material/Fab";
+import InputAdornment from "@mui/material/InputAdornment";
+import Paper from "@mui/material/Paper";
+import TextField from "@mui/material/TextField";
 import logo from "../assets/logo_vertical.png";
+import PaperCard from "../components/cards/papers";
+import WalletCard from "../components/cards/wallet";
 import LoginDialog from "../components/dialogs/login.dialog";
 import RegisterDialog from "../components/dialogs/register.dialog";
-import Paper from "@mui/material/Paper";
-import WalletCard from "../components/cards/wallet";
-import PaperCard from "../components/cards/papers";
-import Fab from "@mui/material/Fab";
-import CloseIcon from "@mui/icons-material/Close";
+import {
+  BaisebolIcon,
+  BasqueteIcon,
+  BoxeIcon,
+  FavoriteIcon,
+  FutebolAIcon,
+  FutebolIcon,
+  HomeIcon,
+  TenisIcon,
+  VoleiIcon,
+} from "../components/icons/sidebar";
 
 const drawerWidth = 299;
 
@@ -151,20 +130,17 @@ const Navlink = styled(Link)(({ theme }) => ({
 export default function ResponsiveDrawer() {
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
-  const [openSideRight, setOpenSideRight] = React.useState(false);
-
-  const [isMobileOpen, setIsMobileOpen] = React.useState(false);
-
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-
-  const location = useLocation();
-  const [value, setValue] = useState(location.pathname);
+  const { pathname } = useLocation();
   const { openLogin, setOpenLogin } = useLayout();
   const { openRegister, setOpenRegister } = useLayout();
   const { user } = useAuthUser();
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = useState(pathname);
+  const [openSideRight, setOpenSideRight] = React.useState(false);
+  const [isMobileOpen, setIsMobileOpen] = React.useState(false);
 
-  const { pathname } = useLocation();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const haveBottomMenu = pathname.startsWith("/conta");
 
   const navigate = useNavigate();
 
@@ -470,7 +446,8 @@ export default function ResponsiveDrawer() {
         {/* To fix margin of toolbar */}
         <Toolbar />
         <Outlet />
-        <Box position={"fixed"} bottom={30} right={30}>
+        <Toolbar />
+        <Box position={"fixed"} bottom={haveBottomMenu ? 80 : 60} right={30}>
           <Fab
             color="primary"
             aria-label="add"

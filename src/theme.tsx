@@ -214,6 +214,10 @@ const theme = createTheme({
           },
           ...(ownerState.color === "secondary" && {
             ":hover": {
+              [theme.breakpoints.down("md")]: {
+                backgroundColor: theme.palette.secondary.main,
+                color: theme.palette.secondary.contrastText,
+              },
               backgroundColor: theme.palette.primary.main,
               color: theme.palette.primary.contrastText,
             },
@@ -224,6 +228,7 @@ const theme = createTheme({
     MuiBottomNavigation: {
       styleOverrides: {
         root: {
+          color: "#aaaaaa",
           "& .MuiSvgIcon-root": {
             fontSize: "32px",
           },
@@ -233,6 +238,13 @@ const theme = createTheme({
           "& .MuiBottomNavigationAction-label.Mui-selected": {
             display: "none",
           },
+        },
+      },
+    },
+    MuiBottomNavigationAction: {
+      styleOverrides: {
+        root: {
+          color: "#aaaaaa",
         },
       },
     },

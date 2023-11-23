@@ -1,4 +1,5 @@
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -6,17 +7,18 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
+import dayjs from "dayjs";
 import { useContext, useState } from "react";
-import PaperBetDialog from "../dialogs/paper.dialog";
 import { AppContext } from "../../contexts/AppContext";
-import { Game, Event } from "../../types";
-import Title from "./title";
-import Players from "./players";
-import { StyledTableCell, StyledTableRow } from "./styled";
 import { useAuthUser } from "../../hooks/useAuthUser";
 import { useLayout } from "../../hooks/useLayout";
-import dayjs from "dayjs";
+import { Event, Game } from "../../types";
+import PaperBetDialog from "../dialogs/paper.dialog";
+import Players from "./players";
+import { StyledTableCell, StyledTableRow } from "./styled";
+import Title from "./title";
+import Hidden from "@mui/material/Hidden";
+import GameComponent from "./game";
 
 export default function Events({
   event,
@@ -68,143 +70,184 @@ export default function Events({
     });
   };
 
+  // const allGamesExtractedFromEvents: any[] = [];
+
+  // event.map((event) => {
+  //   event.games.map((game, index) => {
+  //     allGamesExtractedFromEvents.push({ ...game, title: event.title, end_date: event.end_date });
+  //   });
+  // });
+  console.log(event);
+
   return (
     <>
       <PaperBetDialog
         open={openPaperBetDialog}
         onClose={() => setOpenPaperBetDialog(!openPaperBetDialog)}
       />
-      <Box mt={4}>
+
+      <Box mt={{ sm: 1, md: 4 }}>
         <Title
           title={event.sport}
           breadcrumb={slug}
           isFavorite={Boolean(toBeFavorite)}
         />
-        <Box mt={2}>
-          <TableContainer component={Paper} sx={{ borderRadius: "10px" }}>
-            <Table sx={{ minWidth: 700 }}>
-              <TableHead>
-                <TableRow>
-                  <StyledTableCell>{event.title}</StyledTableCell>
-                  <StyledTableCell align="center">
-                    Vencedor da Partida
-                  </StyledTableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {event.games.length === 0 && (
-                  <>
-                    <Typography
-                      variant="body1"
-                      color="gray"
-                      textAlign={"start"}
-                      p={5}
-                    >
-                      Não há jogos.
-                    </Typography>
-                  </>
-                )}
-                {event.games &&
-                  event.games.map((game, index) => (
-                    <StyledTableRow key={index}>
-                      <StyledTableCell component="th" scope="row">
-                        <Box display={"flex"} alignItems={"center"} gap={4}>
-                          <Typography
-                            variant="body2"
-                            color="primary"
-                            sx={{ minWidth: "150px" }}
-                          >
-                            {dayjs(game.time_close_bet).format(
-                              "DD/MM/YYYY hh:mm"
-                            )}
-                          </Typography>
-                          <Box
-                            height={100}
-                            sx={({ palette }) => ({
-                              borderRight: "1px solid",
-                              borderRightColor: palette.primary.main,
-                            })}
-                          ></Box>
-                          <Players
-                            home={game.home_name}
-                            home_image={game.home_image}
-                            visitant={game.away_name}
-                            visitant_image={game.away_image}
-                          />
-                        </Box>
-                      </StyledTableCell>
 
-                      <StyledTableCell align="center">
-                        <Box
-                          display={"flex"}
-                          justifyContent={"center"}
-                          gap={4}
-                          sx={{
-                            "& .MuiButton-root": { minWidth: "140px" },
-                          }}
-                        >
-                          <Button
-                            variant="contained"
-                            color={
-                              paper?.bets.some(
-                                (e) =>
-                                  e.game_id === game.id && e.bet_choice == 1
-                              )
-                                ? "primary"
-                                : "secondary"
-                            }
-                            data-choice="1"
-                            data-rate={game.home_rate.toFixed(2)}
-                            data-name={game.home_name}
-                            onClick={(e) => handleIntentBet(e, game)}
+        <Hidden smDown implementation="css">
+          <Box mt={2}>
+            <TableContainer component={Paper} sx={{ borderRadius: "10px" }}>
+              <TableContainer sx={{ minWidth: 700 }}>
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell>{event.title}</StyledTableCell>
+                    <StyledTableCell align="center">
+                      Vencedor da Partida
+                    </StyledTableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {event.games.length === 0 && (
+                    <>
+                      <Typography
+                        variant="body1"
+                        color="gray"
+                        textAlign={"start"}
+                        p={5}
+                      >
+                        Não há jogos.
+                      </Typography>
+                    </>
+                  )}
+                  {event.games &&
+                    event.games.map((game, index) => (
+                      <StyledTableRow key={index}>
+                        <StyledTableCell component="th" scope="row">
+                          <Box display={"flex"} alignItems={"center"} gap={4}>
+                            <Typography
+                              variant="body2"
+                              color="primary"
+                              sx={{ minWidth: "150px" }}
+                            >
+                              {dayjs(game.time_close_bet).format(
+                                "DD/MM/YYYY hh:mm"
+                              )}
+                            </Typography>
+                            <Box
+                              height={100}
+                              sx={({ palette }) => ({
+                                borderRight: "1px solid",
+                                borderRightColor: palette.primary.main,
+                              })}
+                            ></Box>
+                            <Players
+                              home={game.home_name}
+                              home_image={game.home_image}
+                              visitant={game.away_name}
+                              visitant_image={game.away_image}
+                            />
+                          </Box>
+                        </StyledTableCell>
+
+                        <StyledTableCell align="center">
+                          <Box
+                            display={"flex"}
+                            justifyContent={"center"}
+                            gap={4}
+                            sx={{
+                              "& .MuiButton-root": { minWidth: "140px" },
+                            }}
                           >
-                            1 <br />
-                            {game.home_rate.toFixed(2)}
-                          </Button>
-                          <Button
-                            variant="contained"
-                            color={
-                              paper?.bets.some(
-                                (e) =>
-                                  e.game_id === game.id && e.bet_choice == 0
-                              )
-                                ? "primary"
-                                : "secondary"
-                            }
-                            data-choice="0"
-                            data-rate={game.draw_rate.toFixed(2)}
-                            data-name={"Empate"}
-                            onClick={(e) => handleIntentBet(e, game)}
-                          >
-                            x <br />
-                            {game.draw_rate.toFixed(2)}
-                          </Button>
-                          <Button
-                            variant="contained"
-                            color={
-                              paper?.bets.some(
-                                (e) =>
-                                  e.game_id === game.id && e.bet_choice == -1
-                              )
-                                ? "primary"
-                                : "secondary"
-                            }
-                            data-choice="-1"
-                            data-rate={game.away_rate.toFixed(2)}
-                            data-name={game.away_name}
-                            onClick={(e) => handleIntentBet(e, game)}
-                          >
-                            2 <br />
-                            {game.away_rate.toFixed(2)}
-                          </Button>
-                        </Box>
-                      </StyledTableCell>
-                    </StyledTableRow>
-                  ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Box>
+                            <Button
+                              variant="contained"
+                              color={
+                                paper?.bets.some(
+                                  (e) =>
+                                    e.game_id === game.id && e.bet_choice == 1
+                                )
+                                  ? "primary"
+                                  : "secondary"
+                              }
+                              data-choice="1"
+                              data-rate={game.home_rate.toFixed(2)}
+                              data-name={game.home_name}
+                              onClick={(e) => handleIntentBet(e, game)}
+                            >
+                              1 <br />
+                              {game.home_rate.toFixed(2)}
+                            </Button>
+                            <Button
+                              variant="contained"
+                              color={
+                                paper?.bets.some(
+                                  (e) =>
+                                    e.game_id === game.id && e.bet_choice == 0
+                                )
+                                  ? "primary"
+                                  : "secondary"
+                              }
+                              data-choice="0"
+                              data-rate={game.draw_rate.toFixed(2)}
+                              data-name={"Empate"}
+                              onClick={(e) => handleIntentBet(e, game)}
+                            >
+                              x <br />
+                              {game.draw_rate.toFixed(2)}
+                            </Button>
+                            <Button
+                              variant="contained"
+                              color={
+                                paper?.bets.some(
+                                  (e) =>
+                                    e.game_id === game.id && e.bet_choice == -1
+                                )
+                                  ? "primary"
+                                  : "secondary"
+                              }
+                              data-choice="-1"
+                              data-rate={game.away_rate.toFixed(2)}
+                              data-name={game.away_name}
+                              onClick={(e) => handleIntentBet(e, game)}
+                            >
+                              2 <br />
+                              {game.away_rate.toFixed(2)}
+                            </Button>
+                          </Box>
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    ))}
+                </TableBody>
+              </TableContainer>
+            </TableContainer>
+          </Box>
+        </Hidden>
+
+        <Hidden smUp implementation="css">
+          {event.games.length === 0 && (
+            <>
+              <Typography
+                variant="body1"
+                color="gray"
+                textAlign={"start"}
+                p={5}
+              >
+                Não há jogos.
+              </Typography>
+            </>
+          )}
+          {event.games &&
+            event.games.map((game, index) => (
+              <>
+                <GameComponent
+                  game={{
+                    ...game,
+                    title: event.title,
+                    end_date: event.end_date,
+                  }}
+                  key={index}
+                />
+              </>
+            ))}
+        </Hidden>
       </Box>
     </>
   );

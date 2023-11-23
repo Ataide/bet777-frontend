@@ -1,9 +1,9 @@
+import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import bannerUrl from "../../assets/banner_main.png";
-import Box from "@mui/material/Box";
 import {
   BaisebolIcon,
   BasqueteIcon,
@@ -15,11 +15,11 @@ import {
   VoleiIcon,
 } from "../icons/banner";
 
-import { useNavigate } from "react-router-dom";
 import { Hidden } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import basquete from "../../assets/icons/basquete.png";
 import futebol from "../../assets/icons/futebol.png";
 import volei from "../../assets/icons/volei.png";
-import basquete from "../../assets/icons/basquete.png";
 
 function ItemSports() {}
 

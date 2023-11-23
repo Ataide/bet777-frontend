@@ -49,3 +49,9 @@ article.page {
   max-width: 1160px !important;
   margin: 0 auto;
 }
+
+@media (hover: hover) and (pointer: fine) {
+  button:hover {
+    background: inherit;
+  }
+}

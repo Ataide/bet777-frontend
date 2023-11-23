@@ -1,12 +1,12 @@
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
-import { changeFavoriteFn } from "../../services/EventService";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import { StarIcon, StarOutLineIcon } from "../icons/general";
-import { useLayout } from "../../hooks/useLayout";
 import { useAuthUser } from "../../hooks/useAuthUser";
+import { useLayout } from "../../hooks/useLayout";
+import { changeFavoriteFn } from "../../services/EventService";
+import { StarIcon, StarOutLineIcon } from "../icons/general";
 
 export default function Title({
   title,
@@ -33,7 +33,7 @@ export default function Title({
   );
 
   return (
-    <Box px={4}>
+    <Box px={{ sm: 1, md: 4 }}>
       <Box>
         <Box display={"flex"}>
           <Typography variant="h3">{title}</Typography>

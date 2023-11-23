@@ -1,41 +1,34 @@
-import Grid from "@mui/material/Grid";
-import { useMutation, useQuery, useQueryClient } from "react-query";
-import { getFavoritesEventsFn } from "../../services/EventService";
-import Events from "../../components/events/events";
-import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import MenuList from "@mui/material/MenuList";
-import MenuItem from "@mui/material/MenuItem";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import { z } from "zod";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
+import ListAltIcon from "@mui/icons-material/ListAlt";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+import BottomNavigation from "@mui/material/BottomNavigation";
+import BottomNavigationAction from "@mui/material/BottomNavigationAction";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { useNavigate } from "react-router-dom";
-import { useAuthUser } from "../../hooks/useAuthUser";
+import Grid from "@mui/material/Grid";
+import Hidden from "@mui/material/Hidden";
 import InputAdornment from "@mui/material/InputAdornment";
+import MenuItem from "@mui/material/MenuItem";
+import MenuList from "@mui/material/MenuList";
+import Paper from "@mui/material/Paper";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import { useEffect, useState } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { useMutation, useQueryClient } from "react-query";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { z } from "zod";
+import { updateProfileUserFn } from "../../api/authApi";
 import {
   CpfTextMask,
   DateTextMask,
   PhoneTextMask,
 } from "../../components/masks/text.masks";
-import { updateProfileUserFn } from "../../api/authApi";
-import { toast } from "react-toastify";
-import BottomNavigation from "@mui/material/BottomNavigation";
-import BottomNavigationAction from "@mui/material/BottomNavigationAction";
-import { HomeIcon } from "../../components/icons/sidebar";
-import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
-import EventNoteIcon from "@mui/icons-material/EventNote";
-import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
-import SettingsIcon from "@mui/icons-material/Settings";
-import Hidden from "@mui/material/Hidden";
-import AccountBoxIcon from "@mui/icons-material/AccountBox";
-import ListAltIcon from "@mui/icons-material/ListAlt";
-import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
-import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
-import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+import { useAuthUser } from "../../hooks/useAuthUser";
 
 const profileInput = z.object({
   name: z.string().min(1, { message: "Insira seu usuario" }).optional(),

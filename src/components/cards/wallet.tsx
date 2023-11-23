@@ -1,21 +1,21 @@
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
+import Divider from "@mui/material/Divider";
+import Paper from "@mui/material/Paper";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
-import { useEffect, useState } from "react";
-import Button, { ButtonProps } from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { IBet, TabPanelProps } from "../../types";
+import { useState } from "react";
+import { useQuery } from "react-query";
+import { useNavigate } from "react-router-dom";
 import { useStateContext } from "../../contexts";
-import Paper from "@mui/material/Paper";
 import { BetType } from "../../enums";
-import Divider from "@mui/material/Divider";
-import { useQuery, useQueryClient } from "react-query";
-import { getOpenPapersFn } from "../../services/BetService";
 import { useAuthUser } from "../../hooks/useAuthUser";
 import { useLayout } from "../../hooks/useLayout";
+import { getOpenPapersFn } from "../../services/BetService";
 import { getWalletFn } from "../../services/WalletService";
-import { useNavigate } from "react-router-dom";
+import { TabPanelProps } from "../../types";
 import { getPalpitesFromBet } from "../../utils/utils";
 
 export default function WalletCard() {

@@ -1,6 +1,6 @@
-import { createContext, PropsWithChildren, useEffect, useState } from "react";
-import { IBet, IPaper } from "../types";
+import { createContext, PropsWithChildren, useState } from "react";
 import { useStateContext } from ".";
+import { IBet, IPaper } from "../types";
 
 interface IAppContextProps {
   paper: IPaper | null;
@@ -27,7 +27,6 @@ export const AppProvider = ({ children }: PropsWithChildren) => {
   });
 
   const addBetToPaper = (_bet: IBet) => {
-
     const alreadyGameInPaper = paper.bets.some(
       (bet) => bet.game_id === _bet.game_id
     );
@@ -83,7 +82,6 @@ export const AppProvider = ({ children }: PropsWithChildren) => {
   };
 
   // useEffect(() => {
-
 
   // }, [paper]);
 

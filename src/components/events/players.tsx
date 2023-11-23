@@ -1,8 +1,6 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { FlamengoIcon } from "../icons/times";
-import palmeiras from "../../assets/Palmeiras .png";
-import { BASE_URL, DOMAIN_URL } from "../../api/authApi";
+import { DOMAIN_URL } from "../../api/authApi";
 export default function Players({
   home,
   visitant,

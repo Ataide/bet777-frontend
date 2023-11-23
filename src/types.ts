@@ -14,6 +14,10 @@ export interface Event {
   updated_at: string;
   games: Game[];
 }
+export interface IGameWithEvent extends Game {
+  title: string;
+  end_date: string;
+}
 export interface Game {
   id?: number;
   event_id: number;

@@ -1,27 +1,23 @@
-import * as React from "react";
-import { useTheme } from "@mui/material/styles";
+import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
+import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
 import MobileStepper from "@mui/material/MobileStepper";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
-import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
-import SwipeableViews from "react-swipeable-views";
-import { autoPlay } from "react-swipeable-views-utils";
-import { useQuery } from "react-query";
-import { getHotEventsFn } from "../../services/EventService";
-import { useContext } from "react";
-import { AppContext } from "../../contexts/AppContext";
-import { useLayout } from "../../hooks/useLayout";
-import { useAuthUser } from "../../hooks/useAuthUser";
+import { useTheme } from "@mui/material/styles";
 import dayjs from "dayjs";
-import Grid from "@mui/material/Grid";
-import { DOMAIN_URL } from "../../api/authApi";
+import * as React from "react";
+import { useContext } from "react";
 import GaugeChart from "react-gauge-chart";
+import { useQuery } from "react-query";
+import { DOMAIN_URL } from "../../api/authApi";
+import { AppContext } from "../../contexts/AppContext";
+import { useAuthUser } from "../../hooks/useAuthUser";
+import { useLayout } from "../../hooks/useLayout";
+import { getHotEventsFn } from "../../services/EventService";
 import { Game } from "../../types";
-
-const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 export default function HotEventsMobile() {
   const { isLoading, isError, data, error } = useQuery(

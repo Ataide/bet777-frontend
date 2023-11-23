@@ -50,16 +50,12 @@ export default function DashboardPage() {
               </Grid>
             </Hidden>
 
-            {/* <Grid item xs={12} mt={4}>
-                <EventsTables />
-              </Grid> */}
-
-            {/* <Grid item xs={12}>
+            <Grid item xs={12}>
               {data &&
                 data.data.map((evento, index) => (
                   <Events key={index} event={evento} />
                 ))}
-            </Grid> */}
+            </Grid>
           </Box>
         </Grid>
       </Grid>
