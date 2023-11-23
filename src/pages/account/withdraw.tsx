@@ -45,7 +45,7 @@ export default function WithdrawPage() {
   } = useForm<IWithdrawInput>({
     resolver: zodResolver(withdrawInput),
     defaultValues: {
-      wallet_amount: user.wallet.amount.toFixed(2),
+      wallet_amount: user.wallet.draw_total.toFixed(2),
       wallet_id: user.wallet.id,
     },
   });
@@ -89,14 +89,14 @@ export default function WithdrawPage() {
 
   useEffect(() => {
     setValue("type", "withdraw");
-    setValue("wallet_amount", user.wallet.amount.toFixed(2));
+    setValue("wallet_amount", user.wallet.draw_total.toFixed(2));
   }, [user]);
 
   useEffect(() => {
     if (!openConfirmDialog) {
       setValue("amount", "0");
       setValue("type", "withdraw");
-      setValue("wallet_amount", user.wallet.amount.toFixed(2));
+      setValue("wallet_amount", user.wallet.draw_total.toFixed(2));
     }
   }, [openConfirmDialog]);
 

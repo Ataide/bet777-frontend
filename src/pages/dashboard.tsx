@@ -15,6 +15,8 @@ import { useQuery } from "react-query";
 import { getEventsFn } from "../services/EventService";
 import { HotEvents } from "../components/carrousel/hotEvents";
 import SimpleSlider from "../components/Slider";
+import Hidden from "@mui/material/Hidden";
+import HotEventsMobile from "../components/carrousel/stepperCarousel";
 
 export default function DashboardPage() {
   const { isLoading, isError, data, error } = useQuery("events", getEventsFn);
@@ -23,12 +25,14 @@ export default function DashboardPage() {
     <>
       <Grid container>
         <Grid item xs={12}>
-          <Box p={4}>
+          <Box p={{ xs: 2, md: 4 }}>
             <MainBanner />
-            <Box>
-              <Box py={4}>
-                <Typography variant="h4">Principais Eventos</Typography>
-              </Box>
+
+            <Box py={4}>
+              <Typography variant="h5">Principais Eventos</Typography>
+            </Box>
+
+            <Hidden smDown>
               <Grid container spacing={1}>
                 <Grid item xs={12} mt={4}>
                   <HotEvents />
@@ -38,14 +42,24 @@ export default function DashboardPage() {
                   <EventsTables />
                 </Grid>
               </Grid>
+            </Hidden>
 
-              <Grid item xs={12}>
-                {data &&
-                  data.data.map((evento, index) => (
-                    <Events key={index} event={evento} />
-                  ))}
+            <Hidden smUp>
+              <Grid item xs={12} maxWidth={"sm"}>
+                <HotEventsMobile />
               </Grid>
-            </Box>
+            </Hidden>
+
+            {/* <Grid item xs={12} mt={4}>
+                <EventsTables />
+              </Grid> */}
+
+            {/* <Grid item xs={12}>
+              {data &&
+                data.data.map((evento, index) => (
+                  <Events key={index} event={evento} />
+                ))}
+            </Grid> */}
           </Box>
         </Grid>
       </Grid>

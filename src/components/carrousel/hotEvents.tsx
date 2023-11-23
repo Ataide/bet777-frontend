@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import Carousel from "react-material-ui-carousel";
+import { Paper, Button, Box, Typography, Grid } from "@mui/material";
 import image from "../../assets/group1.png";
 import GaugeChart from "react-gauge-chart";
 import { useQuery } from "react-query";
@@ -11,11 +12,6 @@ import { AppContext } from "../../contexts/AppContext";
 import Slider from "react-slick";
 import dayjs from "dayjs";
 import { DOMAIN_URL } from "../../api/authApi";
-import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
 
 export function HotEvents() {
   const settings = {
@@ -79,7 +75,7 @@ export function HotEvents() {
                   {event.title}
                 </Typography>
                 <Typography variant="subtitle2" color={"grey"}>
-                  {dayjs(event.end_date).format("DD/MM/YYYY HH:mm")}
+                  {dayjs(event.end_date).format("DD/MM/YYYY hh:mm")}
                 </Typography>
                 <hr />
                 <Box p={1}>

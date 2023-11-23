@@ -22,6 +22,7 @@ import DepositPage from "./pages/account/deposit";
 import WithdrawPage from "./pages/account/withdraw";
 import SportPage from "./pages/sport/sport";
 import TransactionsPage from "./pages/account/transaction";
+import GuestLayout from "./layouts/GuestLayout";
 
 function App() {
   // const [count, setCount] = useState(0);
@@ -32,7 +33,7 @@ function App() {
         <AppProvider>
           <ToastContainer />
           <Routes>
-            <Route path="/" element={<AuthenticatedLayout />}>
+            <Route path="/" element={<GuestLayout />}>
               <Route path="/" element={<DashboardPage />} />
               <Route path="/favoritos" element={<FavoritesPage />} />
               <Route path="/esportes" element={<SportsPage />} />
