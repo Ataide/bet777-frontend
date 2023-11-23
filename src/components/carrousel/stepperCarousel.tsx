@@ -18,6 +18,7 @@ import { useAuthUser } from "../../hooks/useAuthUser";
 import { useLayout } from "../../hooks/useLayout";
 import { getHotEventsFn } from "../../services/EventService";
 import { Game } from "../../types";
+import Divider from "@mui/material/Divider";
 
 export default function HotEventsMobile() {
   const { isLoading, isError, data, error } = useQuery(
@@ -78,163 +79,343 @@ export default function HotEventsMobile() {
   });
 
   return (
-    <Box sx={{ maxWidth: 500, flexGrow: 1 }}>
+    <>
       {allgames.map((game, index) => (
         <Box p={1} display={activeStep === index ? "flex" : "none"}>
-          <Paper
+          <Box p={1}>
+            <Paper
+              sx={{
+                paddingX: 1,
+                paddingY: 1,
+                borderRadius: "10px",
+              }}
+            >
+              <Box p={1}>
+                <Typography textAlign={"center"} variant="body1">
+                  {game.title}
+                </Typography>
+                <Typography variant="subtitle2" color={"grey"}>
+                  {dayjs(game.end_date).format("DD/MM/YYYY hh:mm")}
+                </Typography>
+                <hr />
+                <Box p={1}>
+                  <Grid container spacing={2}>
+                    <Grid item xs={4}>
+                      <Box display={"flex"}>
+                        <img
+                          style={{ margin: "10px auto" }}
+                          src={DOMAIN_URL + game.home_image}
+                          width={40}
+                          alt=""
+                        />
+                      </Box>
+                      <GaugeChart
+                        animate={false}
+                        nrOfLevels={20}
+                        percent={
+                          ((game.home_rate * 100) /
+                            (+game.home_rate +
+                              +game.draw_rate +
+                              +game.away_rate) /
+                            100 +
+                            -1) *
+                          -1
+                        }
+                        colors={["#FF0000", "#00FF00"]}
+                        needleColor="#7AFF59AA"
+                      />
+
+                      <Button
+                        sx={{ minHeight: "26%" }}
+                        variant="contained"
+                        fullWidth={true}
+                        color={
+                          paper?.bets.some(
+                            (e) => e.game_id === game.id && e.bet_choice == 1
+                          )
+                            ? "primary"
+                            : "secondary"
+                        }
+                        data-choice="1"
+                        data-rate={game.home_rate.toFixed(2)}
+                        data-name={game.home_name}
+                        onClick={(e) => handleIntentBet(e, game)}
+                      >
+                        {game.home_name}
+                        <br />
+                        {game.home_rate.toFixed(2)}
+                      </Button>
+                    </Grid>
+
+                    <Grid item xs={4}>
+                      <Box
+                        height={"40px"}
+                        margin={"10px"}
+                        display={"flex"}
+                        alignItems={"center"}
+                        justifyContent={"center"}
+                      >
+                        VS
+                      </Box>
+                      <GaugeChart
+                        animate={false}
+                        colors={["#FF0000", "#00FF00"]}
+                        nrOfLevels={20}
+                        needleColor="#7AFF59AA"
+                        percent={
+                          ((game.draw_rate * 100) /
+                            (+game.home_rate +
+                              +game.draw_rate +
+                              +game.away_rate) /
+                            100 +
+                            -1) *
+                          -1
+                        }
+                      />
+
+                      <Button
+                        variant="contained"
+                        fullWidth
+                        color={
+                          paper?.bets.some(
+                            (e) => e.game_id === game.id && e.bet_choice == 0
+                          )
+                            ? "primary"
+                            : "secondary"
+                        }
+                        data-choice="0"
+                        data-rate={game.draw_rate.toFixed(2)}
+                        data-name={"Empate"}
+                        onClick={(e) => handleIntentBet(e, game)}
+                      >
+                        Empate
+                        <br />
+                        {game.draw_rate.toFixed(2)}
+                      </Button>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <Box display={"flex"}>
+                        <img
+                          style={{ margin: "10px auto" }}
+                          src={DOMAIN_URL + game.away_image}
+                          width={40}
+                          alt=""
+                        />
+                      </Box>
+                      <GaugeChart
+                        animate={false}
+                        colors={["#FF0000", "#00FF00"]}
+                        nrOfLevels={20}
+                        needleColor="#7AFF59AA"
+                        percent={
+                          ((game.away_rate * 100) /
+                            (+game.home_rate +
+                              +game.draw_rate +
+                              +game.away_rate) /
+                            100 +
+                            -1) *
+                          -1
+                        }
+                      />
+
+                      <Button
+                        variant="contained"
+                        fullWidth
+                        color={
+                          paper?.bets.some(
+                            (e) => e.game_id === game.id && e.bet_choice == -1
+                          )
+                            ? "primary"
+                            : "secondary"
+                        }
+                        data-choice="-1"
+                        data-rate={game.away_rate.toFixed(2)}
+                        data-name={game.away_name}
+                        onClick={(e) => handleIntentBet(e, game)}
+                      >
+                        {game.away_name} <br />
+                        {game.away_rate.toFixed(2)}
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </Box>
+              </Box>
+            </Paper>
+          </Box>
+          {/* <Paper
             sx={{
               paddingX: 1,
               paddingY: 1,
               borderRadius: "10px",
+              mt: 3,
             }}
           >
-            <Box p={1}>
-              <Typography textAlign={"center"} variant="body1">
-                {game.title}
-              </Typography>
-              <Typography variant="subtitle2" color={"grey"}>
-                {dayjs(game.end_date).format("DD/MM/YYYY hh:mm")}
-              </Typography>
-              <hr />
-              <Box p={1}>
-                <Grid container spacing={2}>
-                  <Grid item xs={4}>
-                    <img
-                      style={{ margin: "10px auto" }}
-                      src={DOMAIN_URL + game.home_image}
-                      width={40}
-                      alt=""
-                    />
-                    <GaugeChart
-                      animate={false}
-                      nrOfLevels={20}
-                      percent={
-                        ((game.home_rate * 100) /
-                          (+game.home_rate +
-                            +game.draw_rate +
-                            +game.away_rate) /
-                          100 +
-                          -1) *
-                        -1
-                      }
-                      colors={["#FF0000", "#00FF00"]}
-                      needleColor="#7AFF59AA"
-                    />
+            <Typography textAlign={"center"} variant="body1">
+              {game.title}
+            </Typography>
+            <Typography variant="subtitle2" color={"grey"}>
+              {dayjs(game.end_date).format("DD/MM/YYYY hh:mm")}
+            </Typography>
+            <Divider color={"grey"} />
 
-                    <Button
-                      sx={{ minHeight: "26%" }}
-                      variant="contained"
-                      fullWidth={true}
-                      color={
-                        paper?.bets.some(
-                          (e) => e.game_id === game.id && e.bet_choice == 1
-                        )
-                          ? "primary"
-                          : "secondary"
-                      }
-                      data-choice="1"
-                      data-rate={game.home_rate.toFixed(2)}
-                      data-name={game.home_name}
-                      onClick={(e) => handleIntentBet(e, game)}
-                    >
-                      {game.home_name}
-                      <br />
-                      {game.home_rate.toFixed(2)}
-                    </Button>
-                  </Grid>
+            <Grid container spacing={1}>
+              <Grid item xs={4}>
+                <Box
+                  height={"40px"}
+                  margin={"10px"}
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"end"}
+                  flexDirection={"column"}
+                  gap={1}
+                >
+                  <img src={DOMAIN_URL + game.home_image} width={40} alt="" />
+                  <GaugeChart
+                    animate={false}
+                    nrOfLevels={20}
+                    percent={
+                      ((game.home_rate * 100) /
+                        (+game.home_rate + +game.draw_rate + +game.away_rate) /
+                        100 +
+                        -1) *
+                      -1
+                    }
+                    colors={["#FF0000", "#00FF00"]}
+                    needleColor="#7AFF59AA"
+                  />
+                  <Typography
+                    variant="caption"
+                    textAlign={"center"}
+                    fontWeight={400}
+                  >
+                    {game.home_name}
+                  </Typography>
+                </Box>
 
-                  <Grid item xs={4}>
-                    <Box
-                      height={"40px"}
-                      margin={"10px"}
-                      display={"flex"}
-                      alignItems={"center"}
-                      justifyContent={"center"}
-                    >
-                      VS
-                    </Box>
-                    <GaugeChart
-                      animate={false}
-                      colors={["#FF0000", "#00FF00"]}
-                      nrOfLevels={20}
-                      needleColor="#7AFF59AA"
-                      percent={
-                        ((game.draw_rate * 100) /
-                          (+game.home_rate +
-                            +game.draw_rate +
-                            +game.away_rate) /
-                          100 +
-                          -1) *
-                        -1
-                      }
-                    />
+                <Button
+                  sx={{
+                    minHeight: "70px",
+                    fontSize: "18px",
+                  }}
+                  variant="contained"
+                  fullWidth={true}
+                  color={
+                    paper?.bets.some(
+                      (e) => e.game_id === game.id && e.bet_choice == 1
+                    )
+                      ? "primary"
+                      : "secondary"
+                  }
+                  data-choice="1"
+                  data-rate={game.home_rate.toFixed(2)}
+                  data-name={game.home_name}
+                  onClick={(e) => handleIntentBet(e, game)}
+                >
+                  {game.home_rate.toFixed(2)}
+                </Button>
+              </Grid>
 
-                    <Button
-                      variant="contained"
-                      fullWidth
-                      color={
-                        paper?.bets.some(
-                          (e) => e.game_id === game.id && e.bet_choice == 0
-                        )
-                          ? "primary"
-                          : "secondary"
-                      }
-                      data-choice="0"
-                      data-rate={game.draw_rate.toFixed(2)}
-                      data-name={"Empate"}
-                      onClick={(e) => handleIntentBet(e, game)}
-                    >
-                      Empate
-                      <br />
-                      {game.draw_rate.toFixed(2)}
-                    </Button>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <img
-                      style={{ margin: "10px auto" }}
-                      src={DOMAIN_URL + game.away_image}
-                      width={40}
-                      alt=""
-                    />
-                    <GaugeChart
-                      animate={false}
-                      colors={["#FF0000", "#00FF00"]}
-                      nrOfLevels={20}
-                      needleColor="#7AFF59AA"
-                      percent={
-                        ((game.away_rate * 100) /
-                          (+game.home_rate +
-                            +game.draw_rate +
-                            +game.away_rate) /
-                          100 +
-                          -1) *
-                        -1
-                      }
-                    />
+              <Grid item xs={4}>
+                <GaugeChart
+                  animate={false}
+                  colors={["#FF0000", "#00FF00"]}
+                  nrOfLevels={20}
+                  needleColor="#7AFF59AA"
+                  percent={
+                    ((game.draw_rate * 100) /
+                      (+game.home_rate + +game.draw_rate + +game.away_rate) /
+                      100 +
+                      -1) *
+                    -1
+                  }
+                />
+                <Box
+                  height={"40px"}
+                  margin={"10px"}
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"end"}
+                  flexDirection={"column"}
+                  gap={1}
+                  my={2}
+                >
+                  VS
+                </Box>
 
-                    <Button
-                      variant="contained"
-                      fullWidth
-                      color={
-                        paper?.bets.some(
-                          (e) => e.game_id === game.id && e.bet_choice == -1
-                        )
-                          ? "primary"
-                          : "secondary"
-                      }
-                      data-choice="-1"
-                      data-rate={game.away_rate.toFixed(2)}
-                      data-name={game.away_name}
-                      onClick={(e) => handleIntentBet(e, game)}
-                    >
-                      {game.away_name} <br />
-                      {game.away_rate.toFixed(2)}
-                    </Button>
-                  </Grid>
-                </Grid>
-              </Box>
-            </Box>
-          </Paper>
+                <Button
+                  variant="contained"
+                  sx={{ minHeight: "70px", fontSize: "18px" }}
+                  fullWidth
+                  color={
+                    paper?.bets.some(
+                      (e) => e.game_id === game.id && e.bet_choice == 0
+                    )
+                      ? "primary"
+                      : "secondary"
+                  }
+                  data-choice="0"
+                  data-rate={game.draw_rate.toFixed(2)}
+                  data-name={"Empate"}
+                  onClick={(e) => handleIntentBet(e, game)}
+                >
+                  {game.draw_rate.toFixed(2)}
+                </Button>
+              </Grid>
+              <Grid item xs={4}>
+                <Box
+                  height={"40px"}
+                  margin={"10px"}
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"end"}
+                  flexDirection={"column"}
+                  gap={1}
+                  my={2}
+                >
+                  <img src={DOMAIN_URL + game.away_image} width={40} alt="" />
+                  <GaugeChart
+                    animate={false}
+                    colors={["#FF0000", "#00FF00"]}
+                    nrOfLevels={20}
+                    needleColor="#7AFF59AA"
+                    percent={
+                      ((game.away_rate * 100) /
+                        (+game.home_rate + +game.draw_rate + +game.away_rate) /
+                        100 +
+                        -1) *
+                      -1
+                    }
+                  />
+
+                  <Typography
+                    variant="caption"
+                    textAlign={"center"}
+                    fontWeight={400}
+                  >
+                    {game.away_name}
+                  </Typography>
+                </Box>
+                <Button
+                  variant="contained"
+                  sx={{ minHeight: "70px", fontSize: "18px" }}
+                  fullWidth
+                  color={
+                    paper?.bets.some(
+                      (e) => e.game_id === game.id && e.bet_choice == -1
+                    )
+                      ? "primary"
+                      : "secondary"
+                  }
+                  data-choice="-1"
+                  data-rate={game.away_rate.toFixed(2)}
+                  data-name={game.away_name}
+                  onClick={(e) => handleIntentBet(e, game)}
+                >
+                  {game.away_rate.toFixed(2)}
+                </Button>
+              </Grid>
+            </Grid>
+          </Paper> */}
         </Box>
       ))}
 
@@ -265,6 +446,6 @@ export default function HotEventsMobile() {
           </Button>
         }
       />
-    </Box>
+    </>
   );
 }

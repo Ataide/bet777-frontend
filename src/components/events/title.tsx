@@ -33,7 +33,7 @@ export default function Title({
   );
 
   return (
-    <Box px={{ sm: 1, md: 4 }}>
+    <Box px={{ xs: 1, md: 4 }} mt={{ xs: 4 }}>
       <Box>
         <Box display={"flex"}>
           <Typography variant="h3">{title}</Typography>

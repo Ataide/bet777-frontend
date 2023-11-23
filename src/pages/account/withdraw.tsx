@@ -117,7 +117,7 @@ export default function WithdrawPage() {
         onClose={() => setOpenConfirmDialog(false)}
       />
       <Grid container>
-        <Hidden smDown implementation="css">
+        <Hidden smDown>
           <Grid item xs={3}>
             <Box p={4}>
               <Paper>

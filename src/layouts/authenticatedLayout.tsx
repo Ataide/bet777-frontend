@@ -1,38 +1,27 @@
-import { makeStyles } from "@material-ui/core/styles";
-import { default as Menu, default as MenuIcon } from "@mui/icons-material/Menu";
-import AppBar from "@mui/material/AppBar";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
-import Hidden from "@mui/material/Hidden";
-import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import { styled, useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import clsx from "clsx";
-import * as React from "react";
-import { useEffect, useState } from "react";
-import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import AccountMenu from "../components/accountMenu";
-import { useAuthUser } from "../hooks/useAuthUser";
-import { useLayout } from "../hooks/useLayout";
-
-import CloseIcon from "@mui/icons-material/Close";
-import SearchIcon from "@mui/icons-material/Search";
-import Container from "@mui/material/Container";
-import Fab from "@mui/material/Fab";
-import InputAdornment from "@mui/material/InputAdornment";
 import Paper from "@mui/material/Paper";
+import Toolbar from "@mui/material/Toolbar";
+
+import SearchIcon from "@mui/icons-material/Search";
+import AppBar from "@mui/material/AppBar";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import { styled } from "@mui/material/styles";
+import { useState } from "react";
 import logo from "../assets/logo_vertical.png";
+import AccountMenu from "../components/accountMenu";
 import PaperCard from "../components/cards/papers";
 import WalletCard from "../components/cards/wallet";
 import LoginDialog from "../components/dialogs/login.dialog";
@@ -48,74 +37,8 @@ import {
   TenisIcon,
   VoleiIcon,
 } from "../components/icons/sidebar";
-
-const drawerWidth = 299;
-
-const righrDrawerWidth = 374;
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-  },
-  appBar: {
-    [theme.breakpoints.up("sm")]: {
-      transition: theme.transitions.create(["margin", "width"], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-      }),
-      flexShrink: 0,
-    },
-  },
-  appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  hide: {
-    display: "none",
-  },
-  drawer: {
-    [theme.breakpoints.up("sm")]: {
-      width: drawerWidth,
-      flexShrink: 0,
-    },
-  },
-  drawerPaper: {
-    width: drawerWidth,
-  },
-  drawerHeader: {
-    display: "flex",
-    alignItems: "center",
-    padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
-    justifyContent: "flex-end",
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    transition: theme.transitions.create("margin", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: -drawerWidth,
-    },
-  },
-  contentShift: {
-    transition: theme.transitions.create("margin", {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginLeft: 0,
-  },
-}));
+import { useAuthUser } from "../hooks/useAuthUser";
+import { useLayout } from "../hooks/useLayout";
 
 const Navlink = styled(Link)(({ theme }) => ({
   color: "#ffffff",
@@ -127,34 +50,18 @@ const Navlink = styled(Link)(({ theme }) => ({
   },
 }));
 
-export default function ResponsiveDrawer() {
-  const classes = useStyles();
-  const theme = useTheme();
-  const { pathname } = useLocation();
+export default function AuthenticatedLayout() {
+  const location = useLocation();
+  const [value, setValue] = useState(location.pathname);
   const { openLogin, setOpenLogin } = useLayout();
   const { openRegister, setOpenRegister } = useLayout();
   const { user } = useAuthUser();
-  const [open, setOpen] = React.useState(false);
-  const [value, setValue] = useState(pathname);
-  const [openSideRight, setOpenSideRight] = React.useState(false);
-  const [isMobileOpen, setIsMobileOpen] = React.useState(false);
 
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const haveBottomMenu = pathname.startsWith("/conta");
+  const { drawerWidth, righrDrawerWidth } = useLayout();
+
+  const { pathname } = useLocation();
 
   const navigate = useNavigate();
-
-  const handleSmallScreenDrawerToggle = () => {
-    setIsMobileOpen(!isMobileOpen);
-  };
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
 
   const drawer = (
     <>
@@ -289,13 +196,8 @@ export default function ResponsiveDrawer() {
     </>
   );
 
-  useEffect(() => {
-    setOpen(!isSmallScreen);
-  }, [isSmallScreen]);
-
   return (
-    <div className={classes.root}>
-      <CssBaseline />
+    <Box sx={{ display: "flex" }}>
       <AppBar
         position="fixed"
         color="secondary"
@@ -304,24 +206,39 @@ export default function ResponsiveDrawer() {
           ml: { sm: `${drawerWidth}px` },
         }}
       >
-        <Hidden smUp implementation="css">
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={
-                isSmallScreen ? handleSmallScreenDrawerToggle : handleDrawerOpen
-              }
-              edge="start"
-              className={clsx(classes.menuButton, open && classes.hide)}
-            >
-              <Menu sx={{ position: "absolute", left: 20 }} />
-            </IconButton>
+        <Toolbar>
+          <Box
+            display={"flex"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+            flex={1}
+          >
+            <Box display={"flex"} gap={3}>
+              <Navlink to={"/"} className={pathname === "/" ? "active" : ""}>
+                Pagina Inicial
+              </Navlink>
+              <Navlink
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (!user) {
+                    setOpenLogin(true);
+                    return;
+                  }
 
-            <Box display={"flex"} flex={1} justifyContent={"center"}>
-              <img src={logo} width={78} alt="" />
+                  navigate("/favoritos");
+                }}
+                to={"/favoritos"}
+                className={pathname === "/favoritos" ? "active" : ""}
+              >
+                Favoritos
+              </Navlink>
+              <Navlink
+                to={"/esportes"}
+                className={pathname === "/esportes" ? "active" : ""}
+              >
+                Esportes
+              </Navlink>
             </Box>
-
             <Box display={"flex"} gap={2}>
               {!user ? (
                 <>
@@ -344,96 +261,28 @@ export default function ResponsiveDrawer() {
                 <AccountMenu name={user?.name} />
               )}
             </Box>
-          </Toolbar>
-        </Hidden>
-
-        <Hidden mdDown implementation="css">
-          <Toolbar>
-            <Box
-              display={"flex"}
-              justifyContent={"space-between"}
-              alignItems={"center"}
-              flex={1}
-            >
-              <Box display={"flex"} gap={3}>
-                <Navlink to={"/"} className={pathname === "/" ? "active" : ""}>
-                  Pagina Inicial
-                </Navlink>
-                <Navlink
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (!user) {
-                      setOpenLogin(true);
-                      return;
-                    }
-
-                    navigate("/favoritos");
-                  }}
-                  to={"/favoritos"}
-                  className={pathname === "/favoritos" ? "active" : ""}
-                >
-                  Favoritos
-                </Navlink>
-                <Navlink
-                  to={"/esportes"}
-                  className={pathname === "/esportes" ? "active" : ""}
-                >
-                  Esportes
-                </Navlink>
-              </Box>
-              <Box display={"flex"} gap={2}>
-                {!user ? (
-                  <>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => setOpenRegister(true)}
-                    >
-                      <Typography>Cadastro</Typography>
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => setOpenLogin(true)}
-                    >
-                      <Typography>Login</Typography>
-                    </Button>
-                  </>
-                ) : (
-                  <AccountMenu name={user?.name} />
-                )}
-              </Box>
-            </Box>
-          </Toolbar>
-        </Hidden>
+          </Box>
+        </Toolbar>
       </AppBar>
-
-      <nav className={classes.drawer}>
-        <Hidden smUp implementation="css">
-          <Drawer
-            variant="temporary"
-            anchor={theme.direction === "rtl" ? "right" : "left"}
-            open={isMobileOpen}
-            onClose={handleSmallScreenDrawerToggle}
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-        <Hidden xsDown implementation="css">
-          <Drawer
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            variant="persistent"
-            open={open}
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-      </nav>
+      <Box
+        component="nav"
+        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+        aria-label="nav-links"
+      >
+        <Drawer
+          variant="permanent"
+          sx={{
+            display: { xs: "none", sm: "block" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+            },
+          }}
+          open={true}
+        >
+          {drawer}
+        </Drawer>
+      </Box>
       <Box
         component="main"
         sx={{
@@ -446,18 +295,44 @@ export default function ResponsiveDrawer() {
         {/* To fix margin of toolbar */}
         <Toolbar />
         <Outlet />
-        <Toolbar />
-        <Box position={"fixed"} bottom={haveBottomMenu ? 80 : 60} right={30}>
-          <Fab
-            color="primary"
-            aria-label="add"
-            onClick={() => setOpenSideRight(!openSideRight)}
-          >
-            <MenuIcon />
-          </Fab>
-        </Box>
       </Box>
-
+      {/* <Paper
+        sx={{
+          position: "fixed",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          display: { sm: "none" },
+          zIndex: 100,
+        }}
+        elevation={3}
+      >
+        <BottomNavigation
+          showLabels={false}
+          value={value}
+          onChange={(e, newValue) => {
+            setTimeout(() => {
+              setValue(newValue);
+              navigate(newValue);
+            }, 200);
+          }}
+        >
+          <BottomNavigationAction value="/" icon={<HomeIcon />} />
+          <BottomNavigationAction
+            value="/wallet"
+            icon={<AccountBalanceWalletIcon />}
+          />
+          <BottomNavigationAction value="/agenda" icon={<EventNoteIcon />} />
+          <BottomNavigationAction
+            value="/tarefas"
+            icon={<PlaylistAddCheckIcon />}
+          />
+          <BottomNavigationAction
+            value="/conta/transacoes"
+            icon={<ReceiptLongIcon />}
+          />
+        </BottomNavigation>
+      </Paper> */}
       <Box
         component="nav"
         sx={{
@@ -468,24 +343,18 @@ export default function ResponsiveDrawer() {
         aria-label="nav-links"
       >
         <Drawer
-          variant={isSmallScreen ? "temporary" : "persistent"}
+          variant="permanent"
           anchor="right"
           sx={{
-            display: { xs: "block", sm: "block" },
+            display: { xs: "none", sm: "block" },
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: righrDrawerWidth,
             },
           }}
-          onClose={() => setOpenSideRight(!openSideRight)}
-          open={isSmallScreen ? openSideRight : true}
+          open={true}
         >
-          <div className={classes.drawerHeader}>
-            <IconButton color="primary" onClick={() => setOpenSideRight(false)}>
-              <CloseIcon />
-            </IconButton>
-          </div>
-
+          <Toolbar />
           <Paper>
             <Box p={2} mt={4} display={"flex"} flexDirection={"column"} gap={4}>
               <WalletCard />
@@ -495,12 +364,11 @@ export default function ResponsiveDrawer() {
           </Paper>
         </Drawer>
       </Box>
-
       <LoginDialog open={openLogin} onClose={() => setOpenLogin(!openLogin)} />
       <RegisterDialog
         open={openRegister}
         onClose={() => setOpenRegister(!openRegister)}
       />
-    </div>
+    </Box>
   );
 }
