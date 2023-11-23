@@ -156,7 +156,7 @@ export default function EventsTables() {
                         >
                           {dayjs(game.time_close_bet).format("DD/MM/YYYY")}{" "}
                           <br />
-                          {dayjs(game.time_close_bet).format("hh:mm")}
+                          {dayjs(game.time_close_bet).format("HH:mm")}
                         </StyledTableCell>
                         <StyledTableCell
                           sx={{

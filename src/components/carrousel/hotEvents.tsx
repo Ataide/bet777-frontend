@@ -79,7 +79,7 @@ export function HotEvents() {
                   {event.title}
                 </Typography>
                 <Typography variant="subtitle2" color={"grey"}>
-                  {dayjs(event.end_date).format("DD/MM/YYYY hh:mm")}
+                  {dayjs(event.end_date).format("DD/MM/YYYY HH:mm")}
                 </Typography>
                 <hr />
                 <Box p={1}>

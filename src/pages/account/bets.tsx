@@ -147,7 +147,7 @@ function PaperInfo({ paper }: IPaperInfoProps) {
                 Hora:
               </Typography>
               <Typography variant="subtitle2" color="primary" ml={1}>
-                {dayjs(paper.created_at).format("hh:mm")}
+                {dayjs(paper.created_at).format("HH:mm")}
               </Typography>
             </Box>
           </Box>
@@ -247,7 +247,7 @@ function PaperInfo({ paper }: IPaperInfoProps) {
                         </Typography>
                         <Typography variant="subtitle2" color="primary" ml={1}>
                           {dayjs(bet.game?.time_close_bet).format(
-                            "DD/MM/YYYY hh:mm"
+                            "DD/MM/YYYY HH:mm"
                           )}
                         </Typography>
                       </Box>
