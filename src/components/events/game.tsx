@@ -55,13 +55,13 @@ export default function GameComponent({ game }: IGameProps) {
         mt: 3,
       }}
     >
-      <Typography textAlign={"center"} variant="body1">
+      <Typography textAlign={"center"} variant="body1" mb={1}>
         {game.title}
       </Typography>
       <Typography variant="subtitle2" color={"grey"}>
         {dayjs(game.end_date).format("DD/MM/YYYY hh:mm")}
       </Typography>
-      <Divider color={"grey"} />
+      <Divider color={"grey"} sx={{ margin: 1 }} />
 
       <Grid container spacing={1}>
         <Grid item xs={4}>

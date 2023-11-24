@@ -195,7 +195,12 @@ export default function ResponsiveDrawer() {
           }}
         >
           <ListItem disablePadding>
-            <ListItemButton onClick={() => navigate("/")}>
+            <ListItemButton
+              onClick={() => {
+                navigate("/");
+                setIsMobileOpen(false);
+              }}
+            >
               <ListItemIcon>
                 <HomeIcon />
               </ListItemIcon>
@@ -209,6 +214,7 @@ export default function ResponsiveDrawer() {
                   setOpenLogin(true);
                   return;
                 }
+                setIsMobileOpen(false);
                 navigate("/favoritos");
               }}
             >
@@ -224,7 +230,12 @@ export default function ResponsiveDrawer() {
             </Typography>
           </Box>
           <ListItem disablePadding>
-            <ListItemButton onClick={() => navigate("/esportes/1")}>
+            <ListItemButton
+              onClick={() => {
+                setIsMobileOpen(false);
+                navigate("/esportes/1");
+              }}
+            >
               <ListItemIcon>
                 <FutebolIcon />
               </ListItemIcon>
@@ -232,7 +243,12 @@ export default function ResponsiveDrawer() {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton onClick={() => navigate("/esportes/2")}>
+            <ListItemButton
+              onClick={() => {
+                setIsMobileOpen(false);
+                navigate("/esportes/2");
+              }}
+            >
               <ListItemIcon>
                 <VoleiIcon />
               </ListItemIcon>
@@ -240,7 +256,12 @@ export default function ResponsiveDrawer() {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton onClick={() => navigate("/esportes/3")}>
+            <ListItemButton
+              onClick={() => {
+                setIsMobileOpen(false);
+                navigate("/esportes/3");
+              }}
+            >
               <ListItemIcon>
                 <BasqueteIcon />
               </ListItemIcon>
@@ -248,7 +269,12 @@ export default function ResponsiveDrawer() {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton onClick={() => navigate("/esportes/7")}>
+            <ListItemButton
+              onClick={() => {
+                setIsMobileOpen(false);
+                navigate("/esportes/7");
+              }}
+            >
               <ListItemIcon>
                 <TenisIcon />
               </ListItemIcon>
@@ -256,7 +282,12 @@ export default function ResponsiveDrawer() {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton onClick={() => navigate("/esportes/6")}>
+            <ListItemButton
+              onClick={() => {
+                setIsMobileOpen(false);
+                navigate("/esportes/6");
+              }}
+            >
               <ListItemIcon>
                 <FutebolAIcon />
               </ListItemIcon>
@@ -264,7 +295,12 @@ export default function ResponsiveDrawer() {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton onClick={() => navigate("/esportes/5")}>
+            <ListItemButton
+              onClick={() => {
+                setIsMobileOpen(false);
+                navigate("/esportes/5");
+              }}
+            >
               <ListItemIcon>
                 <BoxeIcon />
               </ListItemIcon>
@@ -272,7 +308,12 @@ export default function ResponsiveDrawer() {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton onClick={() => navigate("/esportes/7")}>
+            <ListItemButton
+              onClick={() => {
+                setIsMobileOpen(false);
+                navigate("/esportes/7");
+              }}
+            >
               <ListItemIcon>
                 <BaisebolIcon />
               </ListItemIcon>
@@ -280,7 +321,12 @@ export default function ResponsiveDrawer() {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton onClick={() => navigate("/esportes/8")}>
+            <ListItemButton
+              onClick={() => {
+                setIsMobileOpen(false);
+                navigate("/esportes/8");
+              }}
+            >
               <ListItemText primary={"Outros"} />
             </ListItemButton>
           </ListItem>
