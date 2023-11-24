@@ -8,6 +8,12 @@ export enum TransactionType {
   withdraw = "Saque",
 }
 
+export enum TransactionStatus {
+  pending = "Pendente",
+  canceled = "Cancelado",
+  aproved = "Aprovado",
+}
+
 export enum BetResult {
   Vitoria = 1,
   Aberto = 0,

@@ -1,4 +1,4 @@
-import { BetResult } from "./enums";
+import { BetResult, TransactionStatus } from "./enums";
 
 export interface ILoginRequest {
   email: string;
@@ -55,6 +55,7 @@ export interface IWallet {
 }
 
 export interface ITransaction {
+  status: TransactionStatus;
   id: number;
   user_id: number;
   type: string;

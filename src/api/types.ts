@@ -14,6 +14,17 @@ export interface IUser {
   __v: number;
 }
 
+export interface IQrcode {
+  text: string;
+  image: string;
+  amount: string;
+  payment_id: string;
+}
+export interface IResponseDeposit {
+  message: string;
+  qr_code: IQrcode;
+}
+
 export interface ISport {
   id: string;
   name: string;
@@ -30,6 +41,7 @@ export interface IProfile {
 export interface GenericResponse {
   status: string;
   message: string;
+  data: any[];
 }
 
 export interface ILoginResponse {

@@ -200,6 +200,12 @@ const theme = createTheme({
       },
       styleOverrides: {
         root: ({ ownerState, theme }) => ({
+          "&.MuiLoadingButton-root.Mui-disabled": {
+            border: `1px solid ${theme.palette.primary.main}`,
+            "& .MuiLoadingButton-loadingIndicator": {
+              color: theme.palette.primary.main,
+            },
+          },
           minHeight: "36.6px",
           textTransform: "none",
           borderRadius: "10px",

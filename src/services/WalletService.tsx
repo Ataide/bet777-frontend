@@ -1,12 +1,12 @@
 import { Dayjs } from "dayjs";
 import { authApi } from "../api/authApi";
-import { GenericResponse } from "../api/types";
+import { GenericResponse, IResponseDeposit } from "../api/types";
 import { IDepositInput } from "../pages/account/deposit";
 import { IWithdrawInput } from "../pages/account/withdraw";
 import { ITransaction, IWallet } from "../types";
 
 export const depositToWalletFn = async (deposit: IDepositInput | null) => {
-  const response = await authApi.put<GenericResponse>(
+  const response = await authApi.put<IResponseDeposit>(
     "api/wallet/" + deposit?.wallet_id,
     deposit
   );
@@ -23,6 +23,15 @@ export const withdrawWalletFn = async (withdraw: IWithdrawInput | null) => {
 
 export const getWalletFn = async () => {
   const response = await authApi.get<IWallet>("api/wallet");
+  return response.data;
+};
+
+export const checkTransactionCompleteFn = async (
+  payment_id: string | undefined
+) => {
+  const response = await authApi.get<GenericResponse>(
+    "api/transactions/check/" + payment_id
+  );
   return response.data;
 };
 

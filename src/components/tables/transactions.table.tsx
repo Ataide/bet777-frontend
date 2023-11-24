@@ -9,7 +9,7 @@ import Paper from "@mui/material/Paper";
 import { useQuery } from "react-query";
 import { getWalletTransactionsFn } from "../../services/WalletService";
 import Typography from "@mui/material/Typography";
-import { TransactionType } from "../../enums";
+import { TransactionStatus, TransactionType } from "../../enums";
 import dayjs, { Dayjs } from "dayjs";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -69,6 +69,7 @@ export default function TransactionTable() {
             >
               <TableCell sx={{ width: 100 }}>Data/Hora</TableCell>
               <TableCell align="right">Tipo</TableCell>
+              <TableCell align="right">Status</TableCell>
               <TableCell align="right">Quantia</TableCell>
             </TableRow>
           </TableHead>
@@ -86,6 +87,23 @@ export default function TransactionTable() {
                   </TableCell>
                   <TableCell align="right">
                     {TransactionType[row.type]}
+                  </TableCell>
+                  <TableCell align="right">
+                    {TransactionStatus[row.status] ===
+                    TransactionStatus.aproved ? (
+                      <Typography variant="body2" color="primary">
+                        {TransactionStatus[row.status]}
+                      </Typography>
+                    ) : TransactionStatus[row.status] ===
+                      TransactionStatus.canceled ? (
+                      <Typography variant="body2" color="error">
+                        {TransactionStatus[row.status]}
+                      </Typography>
+                    ) : (
+                      <Typography variant="body2">
+                        {TransactionStatus[row.status]}
+                      </Typography>
+                    )}
                   </TableCell>
                   <TableCell align="right">
                     {row.type === "deposit" ? (

@@ -13,12 +13,16 @@ import { toast } from "react-toastify";
 import { z } from "zod";
 import { CurrencyMask } from "../../components/masks/text.masks";
 import { useAuthUser } from "../../hooks/useAuthUser";
+
 import { depositToWalletFn } from "../../services/WalletService";
 import { IPaper } from "../../types";
 import Hidden from "@mui/material/Hidden";
+import DepositQrCodeDialog from "../../components/dialogs/deposit.dialog";
+import { IQrcode, IResponseDeposit } from "../../api/types";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const depositInput = z.object({
-  name: z.string().min(1, { message: "Digite seu nome." }),
+  name: z.string().optional(),
   amount: z.string().min(1, { message: "Valor deve será maior que 10" }),
   wallet_id: z.number().min(1, { message: "Id da carteira é obrigatório" }),
   type: z
@@ -31,7 +35,8 @@ export type IDepositInput = z.infer<typeof depositInput>;
 
 export default function DepositPage() {
   const [openDepositConfirmDialog, setOpenDepositConfirmDialog] =
-    useState(true);
+    useState(false);
+  const [qrcode, setQrcode] = useState<IQrcode | null>(null);
   const navigate = useNavigate();
   const { user } = useAuthUser();
 
@@ -39,6 +44,7 @@ export default function DepositPage() {
     control,
     handleSubmit,
     setValue,
+    getValues,
     formState: { errors, isSubmitSuccessful },
     reset,
   } = useForm<IDepositInput>({
@@ -49,10 +55,6 @@ export default function DepositPage() {
       type: "deposit",
     },
   });
-
-  useEffect(() => {
-    setValue("type", "deposit");
-  }, []);
 
   const onSubmitHandler: SubmitHandler<IDepositInput> = async (
     values: IDepositInput
@@ -68,14 +70,17 @@ export default function DepositPage() {
     error,
   } = useMutation((deposit: IDepositInput) => depositToWalletFn(deposit), {
     onSuccess: (data) => {
-      toast.success("Depósito realizado com sucesso.", {
-        position: "top-right",
-      });
+      // toast.success("Depósito realizado com sucesso.", {
+      //   position: "top-right",
+      // });
+
+      setQrcode(() => data.qr_code);
+      setOpenDepositConfirmDialog(true);
 
       // queryClient.invalidateQueries(["wallet", "authUser"]);
 
       // setValue("amount", "0");
-      window.location.reload();
+      // window.location.reload();
     },
     onError: (error: any) => {
       if (Array.isArray((error as any).response.data.error)) {
@@ -92,8 +97,19 @@ export default function DepositPage() {
     },
   });
 
+  const handleCloseDepositDialog = () => {
+    setOpenDepositConfirmDialog(false);
+    setQrcode(null);
+  };
+
   return (
     <>
+      <DepositQrCodeDialog
+        qrcode={qrcode}
+        open={openDepositConfirmDialog}
+        onClose={handleCloseDepositDialog}
+      />
+
       <Box p={{ xs: 2, md: 4 }} maxWidth={"sm"}>
         <Paper>
           <Box p={{ xs: 2, md: 4 }}>
@@ -110,6 +126,15 @@ export default function DepositPage() {
               mt={2}
               gap={1}
             >
+              <Controller
+                name="type"
+                control={control}
+                defaultValue={"deposit"}
+                render={({ field: { ref, ...field } }) => (
+                  <input type="hidden" {...field} value={"deposit"} />
+                )}
+              />
+
               <div>
                 <Typography variant="caption" ml={1}>
                   Nome
@@ -208,9 +233,17 @@ export default function DepositPage() {
                 </Button>
               </Box>
               <Box display={"flex"} justifyContent={"center"}>
-                <Button variant="outlined" color="primary" type="submit">
+                <LoadingButton
+                  variant="outlined"
+                  color="primary"
+                  type="submit"
+                  loading={isLoading}
+                >
                   Depositar
-                </Button>
+                </LoadingButton>
+                {/* <Button variant="outlined" color="primary" type="submit">
+                  Depositar
+                </Button> */}
               </Box>
             </Box>
           </Box>
