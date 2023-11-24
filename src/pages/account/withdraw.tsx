@@ -217,13 +217,15 @@ export default function WithdrawPage() {
               </div>
 
               <Box display={"flex"} gap={4} justifyContent={"center"} mb={4}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => setValue("amount", "25")}
-                >
-                  R$ 25
-                </Button>
+                <Hidden mdDown>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => setValue("amount", "25")}
+                  >
+                    R$ 25
+                  </Button>
+                </Hidden>
                 <Button
                   variant="contained"
                   color="primary"

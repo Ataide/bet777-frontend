@@ -57,7 +57,7 @@ export default function AuthenticatedLayout() {
                   >
                     Transações
                   </MenuItem>
-                  <MenuItem>Pix</MenuItem>
+                  {/* <MenuItem>Pix</MenuItem> */}
                 </MenuList>
               </Paper>
             </Box>

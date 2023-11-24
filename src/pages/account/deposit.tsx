@@ -15,6 +15,7 @@ import { CurrencyMask } from "../../components/masks/text.masks";
 import { useAuthUser } from "../../hooks/useAuthUser";
 import { depositToWalletFn } from "../../services/WalletService";
 import { IPaper } from "../../types";
+import Hidden from "@mui/material/Hidden";
 
 const depositInput = z.object({
   name: z.string().min(1, { message: "Digite seu nome." }),
@@ -115,6 +116,7 @@ export default function DepositPage() {
                 </Typography>
                 <Controller
                   name="name"
+                  disabled
                   control={control}
                   defaultValue={""}
                   render={({ field: { ref, ...field } }) => (
@@ -174,13 +176,15 @@ export default function DepositPage() {
               </div>
 
               <Box display={"flex"} gap={4} justifyContent={"center"} mb={3}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => setValue("amount", "25")}
-                >
-                  R$ 25
-                </Button>
+                <Hidden mdDown>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => setValue("amount", "25")}
+                  >
+                    R$ 25
+                  </Button>
+                </Hidden>
                 <Button
                   variant="contained"
                   color="primary"
