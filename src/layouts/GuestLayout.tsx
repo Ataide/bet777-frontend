@@ -135,7 +135,6 @@ export default function ResponsiveDrawer() {
   const { openRegister, setOpenRegister } = useLayout();
   const { user } = useAuthUser();
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = useState(pathname);
   const [openSideRight, setOpenSideRight] = React.useState(false);
   const [isMobileOpen, setIsMobileOpen] = React.useState(false);
 

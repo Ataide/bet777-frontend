@@ -114,7 +114,7 @@ export default function AccountMenu({ name }: AccountMenuProps) {
       >
         <MenuItem
           onClick={() => {
-            navigate("/conta");
+            navigate("/conta/profile");
             handleClose();
           }}
         >

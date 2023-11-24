@@ -116,220 +116,149 @@ export default function WithdrawPage() {
         open={openConfirmDialog}
         onClose={() => setOpenConfirmDialog(false)}
       />
-      <Grid container>
-        <Hidden smDown>
-          <Grid item xs={3}>
-            <Box p={4}>
-              <Paper>
-                <MenuList sx={{ p: 2 }}>
-                  <MenuItem onClick={() => navigate("/conta")}>Conta</MenuItem>
-                  <MenuItem onClick={() => navigate("/conta/bets")}>
-                    Minhas bets
-                  </MenuItem>
-                  <MenuItem onClick={() => navigate("/conta/deposito")}>
-                    Depósitos
-                  </MenuItem>
-                  <MenuItem selected>Saques</MenuItem>
-                  <MenuItem onClick={() => navigate("/conta/transacoes")}>
-                    Transações
-                  </MenuItem>
-                  <MenuItem>Pix</MenuItem>
-                </MenuList>
-              </Paper>
-            </Box>
-          </Grid>
-        </Hidden>
 
-        <Grid item xs={12} md={7}>
+      <Box p={{ xs: 2, md: 4 }} maxWidth={"sm"}>
+        <Paper>
           <Box p={{ xs: 2, md: 4 }}>
-            <Paper>
-              <Box p={{ xs: 2, md: 4 }}>
-                <Typography variant="h5"> Saque</Typography>
-                <Box
-                  component="form"
-                  id="form_"
-                  onSubmit={handleSubmit(onSubmitHandler)}
-                  noValidate
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                  mt={2}
-                  gap={1}
+            <Typography variant="h5"> Saque</Typography>
+            <Box
+              component="form"
+              id="form_"
+              onSubmit={handleSubmit(onSubmitHandler)}
+              noValidate
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+              }}
+              mt={2}
+              gap={1}
+            >
+              <div>
+                <Typography variant="caption" ml={1}>
+                  Quantia disponível para saque
+                </Typography>
+                <Controller
+                  name="wallet_amount"
+                  control={control}
+                  disabled={true}
+                  render={({ field: { ref, ...field } }) => (
+                    <TextField
+                      margin="normal"
+                      fullWidth
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <Typography
+                              variant="body1"
+                              fontWeight={400}
+                              color={"primary"}
+                            >
+                              R$
+                            </Typography>
+                            <hr
+                              style={{
+                                height: "35px",
+                                borderColor: "#07bc0c",
+                                marginLeft: "7px",
+                              }}
+                            />
+                          </InputAdornment>
+                        ),
+                      }}
+                      error={Boolean(errors.wallet_amount)}
+                      helperText={errors.wallet_amount?.message}
+                      inputRef={ref}
+                      {...field}
+                    />
+                  )}
+                />
+              </div>
+
+              <div>
+                <Typography variant="caption" ml={1}>
+                  Quantia que deseja sacar
+                </Typography>
+                <Controller
+                  name="amount"
+                  control={control}
+                  defaultValue={""}
+                  render={({ field: { ref, ...field } }) => (
+                    <TextField
+                      {...field}
+                      margin="normal"
+                      fullWidth
+                      InputProps={{
+                        inputComponent: CurrencyMask as any,
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <Typography
+                              variant="body1"
+                              fontWeight={400}
+                              color={"primary"}
+                            >
+                              R$
+                            </Typography>
+                            <hr
+                              style={{
+                                height: "35px",
+                                marginLeft: "7px",
+                                borderColor: "#07bc0c",
+                              }}
+                            />
+                          </InputAdornment>
+                        ),
+                      }}
+                      error={Boolean(errors.amount)}
+                      helperText={errors.amount?.message}
+                      inputRef={ref}
+                    />
+                  )}
+                />
+              </div>
+
+              <Box display={"flex"} gap={4} justifyContent={"center"} mb={4}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => setValue("amount", "25")}
                 >
-                  <div>
-                    <Typography variant="caption" ml={1}>
-                      Quantia disponível para saque
-                    </Typography>
-                    <Controller
-                      name="wallet_amount"
-                      control={control}
-                      disabled={true}
-                      render={({ field: { ref, ...field } }) => (
-                        <TextField
-                          margin="normal"
-                          fullWidth
-                          InputProps={{
-                            startAdornment: (
-                              <InputAdornment position="start">
-                                <Typography
-                                  variant="body1"
-                                  fontWeight={400}
-                                  color={"primary"}
-                                >
-                                  R$
-                                </Typography>
-                                <hr
-                                  style={{
-                                    height: "35px",
-                                    borderColor: "#07bc0c",
-                                    marginLeft: "7px",
-                                  }}
-                                />
-                              </InputAdornment>
-                            ),
-                          }}
-                          error={Boolean(errors.wallet_amount)}
-                          helperText={errors.wallet_amount?.message}
-                          inputRef={ref}
-                          {...field}
-                        />
-                      )}
-                    />
-                  </div>
-
-                  <div>
-                    <Typography variant="caption" ml={1}>
-                      Quantia que deseja sacar
-                    </Typography>
-                    <Controller
-                      name="amount"
-                      control={control}
-                      defaultValue={""}
-                      render={({ field: { ref, ...field } }) => (
-                        <TextField
-                          {...field}
-                          margin="normal"
-                          fullWidth
-                          InputProps={{
-                            inputComponent: CurrencyMask as any,
-                            startAdornment: (
-                              <InputAdornment position="start">
-                                <Typography
-                                  variant="body1"
-                                  fontWeight={400}
-                                  color={"primary"}
-                                >
-                                  R$
-                                </Typography>
-                                <hr
-                                  style={{
-                                    height: "35px",
-                                    marginLeft: "7px",
-                                    borderColor: "#07bc0c",
-                                  }}
-                                />
-                              </InputAdornment>
-                            ),
-                          }}
-                          error={Boolean(errors.amount)}
-                          helperText={errors.amount?.message}
-                          inputRef={ref}
-                        />
-                      )}
-                    />
-                  </div>
-
-                  <Box
-                    display={"flex"}
-                    gap={4}
-                    justifyContent={"center"}
-                    mb={4}
-                  >
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => setValue("amount", "25")}
-                    >
-                      R$ 25
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => setValue("amount", "50")}
-                    >
-                      R$ 50
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => setValue("amount", "75")}
-                    >
-                      R$ 75
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => setValue("amount", "100")}
-                    >
-                      R$ 100
-                    </Button>
-                  </Box>
-                  <Box display={"flex"} justifyContent={"center"}>
-                    <Button variant="outlined" color="primary" type="submit">
-                      Sacar
-                    </Button>
-                  </Box>
-
-                  <Alert
-                    variant="outlined"
-                    severity="warning"
-                    icon={<InfoIcon />}
-                  >
-                    Deposito mínimo de R$ 10,00 (dez reais)
-                  </Alert>
-                </Box>
+                  R$ 25
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => setValue("amount", "50")}
+                >
+                  R$ 50
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => setValue("amount", "75")}
+                >
+                  R$ 75
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => setValue("amount", "100")}
+                >
+                  R$ 100
+                </Button>
               </Box>
-            </Paper>
+              <Box display={"flex"} justifyContent={"center"}>
+                <Button variant="outlined" color="primary" type="submit">
+                  Sacar
+                </Button>
+              </Box>
+
+              <Alert variant="outlined" severity="warning" icon={<InfoIcon />}>
+                Deposito mínimo de R$ 10,00 (dez reais)
+              </Alert>
+            </Box>
           </Box>
-        </Grid>
-      </Grid>
-      <Paper
-        sx={{
-          position: "fixed",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          display: { sm: "none" },
-          zIndex: 100,
-        }}
-        elevation={3}
-      >
-        <BottomNavigation
-          showLabels={false}
-          value={"/conta/saque"}
-          onChange={(e, newValue) => {
-            setTimeout(() => {
-              navigate(newValue);
-            }, 500);
-          }}
-        >
-          <BottomNavigationAction value="/conta" icon={<AccountBoxIcon />} />
-          <BottomNavigationAction value="/conta/bets" icon={<ListAltIcon />} />
-          <BottomNavigationAction
-            value="/conta/deposito"
-            icon={<AccountBalanceIcon />}
-          />
-          <BottomNavigationAction
-            value="/conta/saque"
-            icon={<CurrencyExchangeIcon />}
-          />
-          <BottomNavigationAction
-            value="/conta/transacoes"
-            icon={<ReceiptLongIcon />}
-          />
-        </BottomNavigation>
-      </Paper>
+        </Paper>
+      </Box>
     </>
   );
 }

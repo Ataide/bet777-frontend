@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import { LayoutProvider } from "./contexts/Layout";
-import AuthenticatedLayout from "./layouts/authenticatedLayout";
 import { ToastContainer } from "react-toastify";
 
 import DashboardPage from "./pages/dashboard";
@@ -23,6 +22,7 @@ import WithdrawPage from "./pages/account/withdraw";
 import SportPage from "./pages/sport/sport";
 import TransactionsPage from "./pages/account/transaction";
 import GuestLayout from "./layouts/GuestLayout";
+import AuthenticatedLayout from "./layouts/authenticated.layout";
 
 function App() {
   // const [count, setCount] = useState(0);
@@ -38,11 +38,17 @@ function App() {
               <Route path="/favoritos" element={<FavoritesPage />} />
               <Route path="/esportes" element={<SportsPage />} />
               <Route path="/esportes/:sportId" element={<SportPage />} />
-              <Route path="/conta" element={<AccountPage />} />
-              <Route path="/conta/bets" element={<BetsPage />} />
-              <Route path="/conta/deposito" element={<DepositPage />} />
-              <Route path="/conta/saque" element={<WithdrawPage />} />
-              <Route path="/conta/transacoes" element={<TransactionsPage />} />
+
+              <Route path="/conta" element={<AuthenticatedLayout />}>
+                <Route path="/conta/profile" element={<AccountPage />} />
+                <Route path="/conta/bets" element={<BetsPage />} />
+                <Route path="/conta/deposito" element={<DepositPage />} />
+                <Route path="/conta/saque" element={<WithdrawPage />} />
+                <Route
+                  path="/conta/transacoes"
+                  element={<TransactionsPage />}
+                />
+              </Route>
             </Route>
 
             <Route path="*" element={<NotFoundPage />} />
