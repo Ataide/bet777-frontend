@@ -167,7 +167,7 @@ function Bets() {
                   Odd:
                 </Typography>
                 <Typography variant="caption" color="primary" ml={1}>
-                  {paper.rate}
+                  {paper.rate.toFixed(2)}
                 </Typography>
               </Box>
               <Box display={"flex"} flexDirection={"row"} mb={1}>
