@@ -1,5 +1,6 @@
 import { forwardRef } from "react";
 import { IMaskInput } from "react-imask";
+import { formatter } from "../../utils/utils";
 
 interface IMaskProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
@@ -91,11 +92,13 @@ export const CurrencyMask = forwardRef<HTMLElement, IMaskProps>(
       <IMaskInput
         {...other}
         mask={Number}
-        // thousandsSeparator="."
-        radix="."
+        thousandsSeparator="."
+        radix=","
         inputRef={ref as any}
         onAccept={(value: any) =>
-          onChange({ target: { name: props.name, value } })
+          onChange({
+            target: { name: props.name, value: value },
+          })
         }
         overwrite
       />

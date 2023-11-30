@@ -103,7 +103,7 @@ function Ballance() {
   return (
     <Box display={"flex"} flexDirection={"column"} mt={6}>
       <Box display={"flex"} justifyContent={"space-between"}>
-        <Typography fontWeight={400} variant="caption" color="initial">
+        <Typography fontWeight={400} variant="caption">
           Saldo Total:
         </Typography>
         <Typography fontWeight={400} variant="caption" color="primary">
@@ -112,7 +112,7 @@ function Ballance() {
       </Box>
       <Divider />
       <Box display={"flex"} justifyContent={"space-between"}>
-        <Typography fontWeight={400} variant="caption" color="initial">
+        <Typography fontWeight={400} variant="caption">
           Saldo em aposta:
         </Typography>
         <Typography fontWeight={400} variant="caption" color="primary">
@@ -121,7 +121,7 @@ function Ballance() {
       </Box>
       <Divider />
       <Box display={"flex"} justifyContent={"space-between"}>
-        <Typography fontWeight={400} variant="caption" color="initial">
+        <Typography fontWeight={400} variant="caption">
           Saldo livre pra saque:
         </Typography>
         <Typography fontWeight={400} variant="caption" color="primary">
@@ -157,13 +157,11 @@ function Bets() {
           <Paper sx={{ minHeight: "110px", padding: 0 }} key={index}>
             <Box p={1}>
               <Box display={"flex"} flexDirection={"row"} mb={1}>
-                <Typography variant="caption" color="initial">
-                  Aposta:
-                </Typography>
+                <Typography variant="caption">Aposta:</Typography>
                 <Typography variant="caption" color="primary" ml={1}>
                   {paper.quantity! > 1 ? "Múltipla" : "Única"}
                 </Typography>
-                <Typography variant="caption" color="initial" ml={2}>
+                <Typography variant="caption" ml={2}>
                   Odd:
                 </Typography>
                 <Typography variant="caption" color="primary" ml={1}>
@@ -171,9 +169,7 @@ function Bets() {
                 </Typography>
               </Box>
               <Box display={"flex"} flexDirection={"row"} mb={1}>
-                <Typography variant="caption" color="initial">
-                  Palpite:
-                </Typography>
+                <Typography variant="caption">Palpite:</Typography>
                 <Typography variant="caption" color="primary" ml={1}>
                   {getPalpitesFromBet(paper.bets)}
                 </Typography>
@@ -191,17 +187,13 @@ function Bets() {
                 justifyContent={"space-between"}
               >
                 <Box display={"flex"}>
-                  <Typography variant="caption" color="initial">
-                    Valor:
-                  </Typography>
+                  <Typography variant="caption">Valor:</Typography>
                   <Typography variant="caption" color="primary" ml={1}>
                     R$ {paper.amount}
                   </Typography>
                 </Box>
                 <Box display={"flex"}>
-                  <Typography variant="caption" color="initial">
-                    Lucro possível:
-                  </Typography>
+                  <Typography variant="caption">Lucro possível:</Typography>
                   <Typography variant="caption" color="primary" ml={1}>
                     R$ {paper.profit}
                   </Typography>

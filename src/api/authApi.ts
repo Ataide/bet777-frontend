@@ -4,11 +4,8 @@ import { RegisterInput } from "../components/steppers/register";
 import { GenericResponse, ILoginResponse, IUserResponse } from "./types";
 import { toast } from "react-toastify";
 
-export const BASE_URL = "http://localhost/";
-export const DOMAIN_URL = "http://localhost";
-
-// export const BASE_URL = "https://laravel-dj6v.frb.io/";
-// export const DOMAIN_URL = "https://laravel-dj6v.frb.io";
+export const BASE_URL = import.meta.env.VITE_BASE_URL;
+export const DOMAIN_URL = import.meta.env.VITE_DOMAIN_URL;
 
 export const FORGOTPASSWORD_URL = `${BASE_URL}forgot-password`;
 

@@ -75,13 +75,11 @@ function PaperInfo({ paper }: IPaperInfoProps) {
         <Box>
           <Box display={"flex"} justifyContent={"space-between"} mb={1}>
             <Box display={"flex"}>
-              <Typography variant="subtitle2" color="initial">
-                Aposta:
-              </Typography>
+              <Typography variant="subtitle2">Aposta:</Typography>
               <Typography variant="subtitle2" color="primary" ml={1}>
                 {paper.quantity! > 1 ? "Múltipla" : "Única"}
               </Typography>
-              <Typography variant="subtitle2" color="initial" ml={2}>
+              <Typography variant="subtitle2" ml={2}>
                 Odd:
               </Typography>
               <Typography variant="subtitle2" color="primary" ml={1}>
@@ -101,9 +99,7 @@ function PaperInfo({ paper }: IPaperInfoProps) {
 
           <Box display={"flex"} justifyContent={"space-between"} mb={1}>
             <Box display={"flex"}>
-              <Typography variant="subtitle2" color="initial">
-                Palpite:
-              </Typography>
+              <Typography variant="subtitle2">Palpite:</Typography>
               <Typography variant="subtitle2" color="primary" ml={1}>
                 {getPalpitesFromBet(paper.bets)}
               </Typography>
@@ -111,21 +107,17 @@ function PaperInfo({ paper }: IPaperInfoProps) {
           </Box>
           <Box display={"flex"} justifyContent={"space-between"} mb={1}>
             <Box display={"flex"}>
-              <Typography variant="subtitle2" color="initial">
-                Jogos:
-              </Typography>
+              <Typography variant="subtitle2">Jogos:</Typography>
               <Typography variant="subtitle2" color="primary" ml={1}>
                 {paper.bets.length}
               </Typography>
             </Box>
             <Box display={"flex"}>
-              <Typography variant="subtitle2" color="initial">
-                Data da aposta:
-              </Typography>
+              <Typography variant="subtitle2">Data da aposta:</Typography>
               <Typography variant="subtitle2" color="primary" ml={1}>
                 {dayjs(paper.created_at).format("DD/MM/YYYY")}
               </Typography>
-              <Typography variant="subtitle2" color="initial" ml={1}>
+              <Typography variant="subtitle2" ml={1}>
                 Hora:
               </Typography>
               <Typography variant="subtitle2" color="primary" ml={1}>
@@ -135,16 +127,14 @@ function PaperInfo({ paper }: IPaperInfoProps) {
           </Box>
           <Box display={"flex"} justifyContent={"space-between"} mb={2}>
             <Box display={"flex"}>
-              <Typography variant="subtitle2" color="initial">
-                Valor:
-              </Typography>
+              <Typography variant="subtitle2">Valor:</Typography>
               <Typography variant="subtitle2" color="primary" ml={1}>
                 {formatter.format(paper.amount)}
               </Typography>
             </Box>
 
             <Box display={"flex"}>
-              <Typography variant="subtitle2" color="initial" ml={1}>
+              <Typography variant="subtitle2" ml={1}>
                 Resultado:
               </Typography>
               <Typography
@@ -165,9 +155,7 @@ function PaperInfo({ paper }: IPaperInfoProps) {
           </Box>
 
           <Box display={"flex"}>
-            <Typography variant="subtitle2" color="initial">
-              Lucro possível:
-            </Typography>
+            <Typography variant="subtitle2">Lucro possível:</Typography>
             <Typography variant="subtitle2" color="primary" ml={1}>
               R$ {paper.profit}
             </Typography>
@@ -186,17 +174,13 @@ function PaperInfo({ paper }: IPaperInfoProps) {
                     })}
                   >
                     <Box display={"flex"} flexDirection={"row"} mb={0.5}>
-                      <Typography variant="subtitle2" color="initial">
-                        Odd:
-                      </Typography>
+                      <Typography variant="subtitle2">Odd:</Typography>
                       <Typography variant="subtitle2" color="primary" ml={1}>
                         {bet.rate}
                       </Typography>
                     </Box>
                     <Box display={"flex"} flexDirection={"row"} mb={0.5}>
-                      <Typography variant="subtitle2" color="initial">
-                        Palpite:
-                      </Typography>
+                      <Typography variant="subtitle2">Palpite:</Typography>
                       <Typography variant="subtitle2" color="primary" ml={1}>
                         {bet.bet_choice === 1
                           ? bet.game?.home_name
@@ -213,9 +197,7 @@ function PaperInfo({ paper }: IPaperInfoProps) {
                       mb={0.5}
                     >
                       <Box display={"flex"}>
-                        <Typography variant="subtitle2" color="initial">
-                          Jogo:
-                        </Typography>
+                        <Typography variant="subtitle2">Jogo:</Typography>
                         <Typography variant="subtitle2" color="primary" ml={1}>
                           {bet.game?.home_name + " vs " + bet.game?.away_name}
                         </Typography>
@@ -228,7 +210,7 @@ function PaperInfo({ paper }: IPaperInfoProps) {
                       justifyContent={"space-between"}
                     >
                       <Box display={"flex"}>
-                        <Typography variant="subtitle2" color="initial">
+                        <Typography variant="subtitle2">
                           Data do Jogo:
                         </Typography>
                         <Typography variant="subtitle2" color="primary" ml={1}>
@@ -238,7 +220,7 @@ function PaperInfo({ paper }: IPaperInfoProps) {
                         </Typography>
                       </Box>
                       <Box display={"flex"}>
-                        <Typography variant="subtitle2" color="initial">
+                        <Typography variant="subtitle2">
                           Resultado do jogo:
                         </Typography>
                         {bet.game && bet.game.done ? (

@@ -184,11 +184,7 @@ export default function PaperBetDialog({
                                 flexDirection={"row"}
                                 mb={1}
                               >
-                                <Typography
-                                  variant="subtitle2"
-                                  color="initial"
-                                  ml={2}
-                                >
+                                <Typography variant="subtitle2" ml={2}>
                                   Odd:
                                 </Typography>
                                 <Typography
@@ -204,11 +200,7 @@ export default function PaperBetDialog({
                                 flexDirection={"row"}
                                 mb={1}
                               >
-                                <Typography
-                                  variant="subtitle2"
-                                  color="initial"
-                                  ml={2}
-                                >
+                                <Typography variant="subtitle2" ml={2}>
                                   Palpite:
                                 </Typography>
                                 <Typography
@@ -226,11 +218,7 @@ export default function PaperBetDialog({
                                 justifyContent={"space-between"}
                               >
                                 <Box display={"flex"}>
-                                  <Typography
-                                    variant="subtitle2"
-                                    color="initial"
-                                    ml={2}
-                                  >
+                                  <Typography variant="subtitle2" ml={2}>
                                     Jogo:
                                   </Typography>
                                   <Typography
@@ -268,7 +256,7 @@ export default function PaperBetDialog({
                   alignItems={"center"}
                 >
                   <Box display={"flex"}>
-                    <Typography variant="subtitle2" color="initial" ml={2}>
+                    <Typography variant="subtitle2" ml={2}>
                       Aposta:
                     </Typography>
                     <Typography variant="subtitle2" color="primary" ml={1}>
@@ -276,7 +264,7 @@ export default function PaperBetDialog({
                     </Typography>
                   </Box>
                   <Box display={"flex"}>
-                    <Typography variant="subtitle2" color="initial" ml={2}>
+                    <Typography variant="subtitle2" ml={2}>
                       Odd:
                     </Typography>
                     <Typography variant="subtitle2" color="primary" ml={1}>
@@ -294,7 +282,7 @@ export default function PaperBetDialog({
                   </Box>
                 </Box>
                 <Box display={"flex"}>
-                  <Typography variant="subtitle2" color="initial" ml={2}>
+                  <Typography variant="subtitle2" ml={2}>
                     Palpite:
                   </Typography>
                   <Typography variant="subtitle2" color="primary" ml={1}>
@@ -313,7 +301,7 @@ export default function PaperBetDialog({
                 p={2}
               >
                 <Box display={"flex"} flexDirection={"column"}>
-                  <Typography variant="subtitle2" color="initial" ml={2}>
+                  <Typography variant="subtitle2" ml={2}>
                     Valor da aposta:
                   </Typography>
 
@@ -350,7 +338,7 @@ export default function PaperBetDialog({
                 </Box>
 
                 <Box display={"flex"}>
-                  <Typography variant="subtitle2" color="initial" ml={2}>
+                  <Typography variant="subtitle2" ml={2}>
                     Lucro possível:
                   </Typography>
                   <Typography variant="subtitle2" color="primary" ml={1}>

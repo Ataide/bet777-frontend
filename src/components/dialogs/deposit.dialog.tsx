@@ -37,6 +37,7 @@ export default function DepositQrCodeDialog({
     () => checkTransactionCompleteFn(qrcode?.payment_id),
     {
       enabled: Boolean(qrcode),
+      refetchInterval: 3000,
       onSuccess: (data) => {
         if (data) {
           if (data.status === "aproved") {
@@ -90,16 +91,16 @@ export default function DepositQrCodeDialog({
 
             <Divider variant="fullWidth" color="primary" />
             <Box my={2}>
-              <Typography variant="body2" color="initial" mb={2}>
+              <Typography variant="body2" mb={2}>
                 Destinatário:
               </Typography>
-              <Typography variant="body2" color="initial" fontWeight={500}>
+              <Typography variant="body2" fontWeight={500}>
                 Nome: STARK BANK S.A
               </Typography>
-              <Typography variant="body2" color="initial" fontWeight={500}>
+              <Typography variant="body2" fontWeight={500}>
                 CNPJ: 00.000.000/0001-72
               </Typography>
-              <Typography variant="body2" color="initial" fontWeight={500}>
+              <Typography variant="body2" fontWeight={500}>
                 Quantia: R$ {formatter.format(+qrcode.amount)}
               </Typography>
             </Box>

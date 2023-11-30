@@ -20,10 +20,16 @@ import Hidden from "@mui/material/Hidden";
 import DepositQrCodeDialog from "../../components/dialogs/deposit.dialog";
 import { IQrcode, IResponseDeposit } from "../../api/types";
 import LoadingButton from "@mui/lab/LoadingButton";
+import InfoIcon from "@mui/icons-material/Info";
+import Alert from "@mui/material/Alert";
 
 const depositInput = z.object({
   name: z.string().optional(),
-  amount: z.string().min(1, { message: "Valor deve será maior que 10" }),
+  amount: z
+    .string()
+    .transform((amount) => parseInt(amount))
+    .pipe(z.number().min(2, { message: "Valor minimo de R$ 2,00" }))
+    .transform((amount) => amount.toString()),
   wallet_id: z.number().min(1, { message: "Id da carteira é obrigatório" }),
   type: z
     .string()
@@ -45,6 +51,7 @@ export default function DepositPage() {
     handleSubmit,
     setValue,
     getValues,
+    watch,
     formState: { errors, isSubmitSuccessful },
     reset,
   } = useForm<IDepositInput>({
@@ -61,6 +68,7 @@ export default function DepositPage() {
   ) => {
     callMutate(values);
   };
+
   const queryClient = useQueryClient();
 
   const {
@@ -166,7 +174,7 @@ export default function DepositPage() {
                   name="amount"
                   control={control}
                   defaultValue={""}
-                  render={({ field: { ref, ...field } }) => (
+                  render={({ field: { ref, onChange, ...field } }) => (
                     <TextField
                       {...field}
                       margin="normal"
@@ -191,6 +199,13 @@ export default function DepositPage() {
                             />
                           </InputAdornment>
                         ),
+                      }}
+                      onChange={(e) => {
+                        debugger;
+                        if (Number.isNaN(+e.target.value)) {
+                          return;
+                        }
+                        onChange(e);
                       }}
                       error={Boolean(errors.amount)}
                       helperText={errors.amount?.message}
@@ -232,6 +247,7 @@ export default function DepositPage() {
                   R$ 100
                 </Button>
               </Box>
+
               <Box display={"flex"} justifyContent={"center"}>
                 <LoadingButton
                   variant="outlined"
@@ -241,10 +257,10 @@ export default function DepositPage() {
                 >
                   Depositar
                 </LoadingButton>
-                {/* <Button variant="outlined" color="primary" type="submit">
-                  Depositar
-                </Button> */}
               </Box>
+              <Alert variant="outlined" severity="warning" icon={<InfoIcon />}>
+                Depósito mínimo de R$ 2,00 (dois reais).
+              </Alert>
             </Box>
           </Box>
         </Paper>

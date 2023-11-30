@@ -1,38 +1,37 @@
-import Grid from "@mui/material/Grid";
+import { zodResolver } from "@hookform/resolvers/zod";
+import InfoIcon from "@mui/icons-material/Info";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import MenuList from "@mui/material/MenuList";
-import MenuItem from "@mui/material/MenuItem";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import Hidden from "@mui/material/Hidden";
 import InputAdornment from "@mui/material/InputAdornment";
-import { useMutation, useQuery, useQueryClient } from "react-query";
-import { z } from "zod";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import Paper from "@mui/material/Paper";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { IPaper } from "../../types";
-import { useAuthUser } from "../../hooks/useAuthUser";
 import { toast } from "react-toastify";
-import { withdrawWalletFn } from "../../services/WalletService";
-import InfoIcon from "@mui/icons-material/Info";
+import { z } from "zod";
 import WithdrawConfirmationDialog from "../../components/dialogs/withdraw.dialog";
 import { CurrencyMask } from "../../components/masks/text.masks";
-import BottomNavigation from "@mui/material/BottomNavigation";
-import BottomNavigationAction from "@mui/material/BottomNavigationAction";
-import Hidden from "@mui/material/Hidden";
-import AccountBoxIcon from "@mui/icons-material/AccountBox";
-import ListAltIcon from "@mui/icons-material/ListAlt";
-import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
-import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
-import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+import { useAuthUser } from "../../hooks/useAuthUser";
+import { withdrawWalletFn } from "../../services/WalletService";
+import { IPaper } from "../../types";
 
 const withdrawInput = z.object({
   wallet_amount: z.string().min(1, { message: "Valor da carteira" }),
-  amount: z.string().min(1, { message: "Valor deve será maior que 10" }),
+  amount: z
+    .string()
+    .transform((amount) => parseFloat(amount))
+    .pipe(
+      z
+        .number()
+        .min(10, { message: "Valor mínimo de R$ 10,00" })
+        .max(200, { message: "Valor máximo de R$ 200,00" })
+    )
+    .transform((amount) => amount.toFixed(2)),
   wallet_id: z.number().min(1, { message: "Id da carteira é obrigatório" }),
   type: z.string().min(1, { message: "Tipo da transação é obrigatório" }),
 });
@@ -75,7 +74,7 @@ export default function WithdrawPage() {
     onSuccess: (data) => {
       setOpenConfirmDialog(true);
 
-      toast.success("Saque realizado com sucesso.", {
+      toast.success("Sua solicitação foi enviado. Aguardando aprovação.", {
         position: "top-right",
       });
 
@@ -112,7 +111,7 @@ export default function WithdrawPage() {
   return (
     <>
       <WithdrawConfirmationDialog
-        amount={+getValues("amount")}
+        amount={Number.parseFloat(getValues("amount"))}
         open={openConfirmDialog}
         onClose={() => setOpenConfirmDialog(false)}
       />
@@ -255,7 +254,7 @@ export default function WithdrawPage() {
               </Box>
 
               <Alert variant="outlined" severity="warning" icon={<InfoIcon />}>
-                Deposito mínimo de R$ 10,00 (dez reais)
+                Saque mínimo de R$ 10,00 (dez reais).
               </Alert>
             </Box>
           </Box>
